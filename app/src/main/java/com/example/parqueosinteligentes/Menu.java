@@ -79,6 +79,9 @@ public class Menu extends AppCompatActivity {
                     public void onDataChange(DataSnapshot snapshot) {
                         while(tipo.isEmpty()) {
                             tipo = snapshot.getValue(String.class);
+                            if(tipo==null){//TODO:Se debe implementar registrar los datos en la base, por ahora solo estan quemados
+                                tipo="Privilegiado";//Si un usuario que no esta quemado inicia sesion, se le setea el tipo "privilegiado"
+                            }
                         }
                         Menu.this.runOnUiThread(new Runnable() {
                             @Override
@@ -91,7 +94,6 @@ public class Menu extends AppCompatActivity {
 
                     @Override
                     public void onCancelled(DatabaseError error) {
-
                     }
                 });
 
