@@ -1,5 +1,6 @@
 package com.example.parqueosinteligentes;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -9,6 +10,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -55,8 +58,9 @@ public class Menu extends AppCompatActivity {
                 finish();
             }
         });
-        notificacion();
-    }
+        //notificacion();
+        parquearEstacionamiento("P1");
+        }
 
     private void InitializateComponents(){
         textViewNombre = (TextView) findViewById(R.id.textViewNombre);
@@ -101,4 +105,63 @@ public class Menu extends AppCompatActivity {
         }).start();
 
     }
+
+    public void parquearEstacionamiento(String estacionamiento){
+        //DatabaseReference db_reference_estacionamiento = root.getReference("Parkeo").child(estacionamiento);
+        DatabaseReference db_reference_general = root.getReference();
+        db_reference_general.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                DataSnapshot db_reference_estacionamiento = snapshot.child("Parkeo").child(estacionamiento);
+                DataSnapshot db_reference_usuario = snapshot.child("usuarios");
+
+                double estado_parqueo = db_reference_estacionamiento.child("estado").getValue(Double.class);
+                String prioridad_parqueo = db_reference_estacionamiento.child("tipo").getValue(String.class);
+
+                String prioridad_usuario = db_reference_usuario.child(usuario).child("tipo").getValue(String.class);
+
+                //Validaciones para poder parquear
+                if(estado_parqueo == 0) {
+
+                    if (prioridad_usuario.equals(prioridad_parqueo) || prioridad_usuario.equals("privilegiado")) {
+                        cambiarEstadoEstacionamiento(estacionamiento,1);
+                    }else {
+                        Toast.makeText(getApplicationContext(), "No se puede estacionar en "+ estacionamiento+", es PRIVILEGIADO", Toast.LENGTH_SHORT).show();
+                    }
+
+                }else{
+                    Toast.makeText(getApplicationContext(), "El puesto " + estacionamiento +" se encuentra OCUPADO", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+
+            }
+        });
+
+    }
+
+    public void cambiarEstadoEstacionamiento(String estacionamiento,int estado){
+        DatabaseReference db_reference_estacionamiento = root.getReference("Parkeo").child(estacionamiento);
+
+        db_reference_estacionamiento.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                db_reference_estacionamiento.child("estado").setValue(estado);
+                Toast.makeText(getApplicationContext(), "El estacionamiento " + estacionamiento + " fue cambiado a " + Integer.toString(estado) , Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onCancelled(DatabaseError error) {
+
+            }
+        });
+
+/*
+
+*/
+    }
+
+
 }
