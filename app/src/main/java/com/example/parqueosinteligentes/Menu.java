@@ -1,6 +1,5 @@
 package com.example.parqueosinteligentes;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -10,8 +9,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -32,6 +29,17 @@ public class Menu extends AppCompatActivity {
     private String email;
     private String usuario;
     private String tipo="";
+
+    //
+
+    private TextView textViewEstac1;
+    private TextView textViewEstac2;
+    private TextView textViewEstac3;
+    private TextView textViewEstac4;
+
+    String ArrayIDEstacionamiento[]  = {"P1","P2","P3","P4"};
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,11 +67,21 @@ public class Menu extends AppCompatActivity {
             }
         });
         //notificacion();
-        parquearEstacionamiento("P1");
+        //ocuparEstacionamiento("P1");
+
+        leerEstadoEstacionamientos();
         }
 
     private void InitializateComponents(){
         textViewNombre = (TextView) findViewById(R.id.textViewNombre);
+
+        textViewEstac1 = (TextView) findViewById(R.id.parqueo1);
+        textViewEstac2 = (TextView) findViewById(R.id.parqueo2);
+        textViewEstac3 = (TextView) findViewById(R.id.parqueo3);
+        textViewEstac4 = (TextView) findViewById(R.id.parqueo4);
+
+
+
     }
     public void revisarMapa(View v) {
         Intent mapa = new Intent(this, Parqueadero.class);
@@ -106,7 +124,7 @@ public class Menu extends AppCompatActivity {
 
     }
 
-    public void parquearEstacionamiento(String estacionamiento){
+    public void ocuparEstacionamiento(String estacionamiento){
         //DatabaseReference db_reference_estacionamiento = root.getReference("Parkeo").child(estacionamiento);
         DatabaseReference db_reference_general = root.getReference();
         db_reference_general.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -124,7 +142,7 @@ public class Menu extends AppCompatActivity {
                 if(estado_parqueo == 0) {
 
                     if (prioridad_usuario.equals(prioridad_parqueo) || prioridad_usuario.equals("privilegiado")) {
-                        cambiarEstadoEstacionamiento(estacionamiento,1);
+                        setEstadoEstacionamientoDB(estacionamiento,1);
                     }else {
                         Toast.makeText(getApplicationContext(), "No se puede estacionar en "+ estacionamiento+", es PRIVILEGIADO", Toast.LENGTH_SHORT).show();
                     }
@@ -143,7 +161,7 @@ public class Menu extends AppCompatActivity {
 
     }
 
-    public void cambiarEstadoEstacionamiento(String estacionamiento,int estado){
+    public void setEstadoEstacionamientoDB(String estacionamiento, int estado){
         DatabaseReference db_reference_estacionamiento = root.getReference("Parkeo").child(estacionamiento);
 
         db_reference_estacionamiento.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -158,9 +176,42 @@ public class Menu extends AppCompatActivity {
             }
         });
 
-/*
+    }
 
-*/
+    public void leerEstadoEstacionamientos(){
+
+        for(int i = 0; i< ArrayIDEstacionamiento.length; i++){
+            String estacionamiento = ArrayIDEstacionamiento[i];
+
+            DatabaseReference db_reference_estacionamiento = root.getReference("Parkeo").child(estacionamiento).child("estado");
+            db_reference_estacionamiento.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+                    Double estado = snapshot.getValue(Double.class);
+                    Toast.makeText(getApplicationContext(), "(" + estacionamiento + ") tiene el estado " + (estado == 0 ? "DISPONIBLE":"OCUPADO") , Toast.LENGTH_SHORT).show();
+                    setEstadoEstacionamientoUI(estacionamiento,estado);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+                }
+            });
+
+        }
+    }
+
+    public void setEstadoEstacionamientoUI(String estacionamiento,double estado){
+        String ArrayIDEstacionamiento[]  = {"P1","P2","P3","P4"};
+        TextView[] textViewEstacionamientos ={textViewEstac1,textViewEstac2,textViewEstac3,textViewEstac4};
+        int indexEstacionamiento = -1;
+        for(int i = 0;i < ArrayIDEstacionamiento.length;i++){//Esto es muy ineficiente, pero es temporal para hacer pruebas
+            if(ArrayIDEstacionamiento[i]==estacionamiento){
+                indexEstacionamiento = i;
+            }
+        }
+
+        TextView txtViewestacionamiento = textViewEstacionamientos[indexEstacionamiento];
+        txtViewestacionamiento.setText(estado == 0 ? "DISPONIBLE":"OCUPADO");
     }
 
 
