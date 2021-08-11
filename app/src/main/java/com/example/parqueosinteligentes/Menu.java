@@ -1,5 +1,6 @@
 package com.example.parqueosinteligentes;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -24,11 +25,17 @@ public class Menu extends AppCompatActivity {
     private Button btnMapa;
     private Button cerrarSesion;
     DatabaseReference db_reference;
+    DatabaseReference db_referenceParqueo;
     FirebaseUser user;
     FirebaseDatabase root;
     private String email;
     private String usuario;
-    private String tipo="";
+    private String tipo = "";
+    private TextView P1;
+    private TextView P2;
+    private TextView P3;
+    private TextView P4;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,11 +43,11 @@ public class Menu extends AppCompatActivity {
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-        root=FirebaseDatabase.getInstance();
+        root = FirebaseDatabase.getInstance();
         user = mAuth.getCurrentUser();
 
-        email=user.getEmail();
-        usuario=email.split("@")[0];
+        email = user.getEmail();
+        usuario = email.split("@")[0];
         iniciarBaseDeDatosUsuarios();
         InitializateComponents();
 
@@ -51,36 +58,38 @@ public class Menu extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mAuth.signOut();
-                startActivity(new Intent(Menu.this,MainActivity.class));
+                startActivity(new Intent(Menu.this, MainActivity.class));
                 finish();
             }
         });
         notificacion();
     }
 
-    private void InitializateComponents(){
+    private void InitializateComponents() {
         textViewNombre = (TextView) findViewById(R.id.textViewNombre);
     }
+
     public void revisarMapa(View v) {
         Intent mapa = new Intent(this, Parqueadero.class);
         startActivity(mapa);
     }
-    public void iniciarBaseDeDatosUsuarios(){
+
+    public void iniciarBaseDeDatosUsuarios() {
         db_reference = root.getReference("usuarios");
     }
 
 
-    public void notificacion(){
+    public void notificacion() {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 db_reference.child(usuario).child("tipo").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
-                        while(tipo.isEmpty()) {
+                        while (tipo.isEmpty()) {
                             tipo = snapshot.getValue(String.class);
-                            if(tipo==null){//TODO:Se debe implementar registrar los datos en la base, por ahora solo estan quemados
-                                tipo="Privilegiado";//Si un usuario que no esta quemado inicia sesion, se le setea el tipo "privilegiado"
+                            if (tipo == null) {//TODO:Se debe implementar registrar los datos en la base, por ahora solo estan quemados
+                                tipo = "Privilegiado";//Si un usuario que no esta quemado inicia sesion, se le setea el tipo "privilegiado"
                             }
                         }
                         Menu.this.runOnUiThread(new Runnable() {
@@ -100,5 +109,28 @@ public class Menu extends AppCompatActivity {
             }
         }).start();
 
+    }
+
+    public void iniciarBaseDeDatosParqueos() {
+        db_referenceParqueo = root.getReference("Parkeo");
+    }
+
+    public void mostrarParkeo() {
+        db_referenceParqueo.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //Leer los parqueos
+
+                P1.setText(dataSnapshot.child("P1").getValue().toString());
+
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }

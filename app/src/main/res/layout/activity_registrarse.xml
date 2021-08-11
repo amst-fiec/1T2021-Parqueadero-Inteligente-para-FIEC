@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".Registrarse">
 
 
     <LinearLayout
@@ -13,66 +13,56 @@
         android:orientation="vertical"
         tools:context=".MainActivity">
 
+
+
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="135dp"
             android:layout_height="122dp"
             android:layout_gravity="center"
             android:layout_marginTop="200px"
+            android:layout_marginBottom="200px"
             app:srcCompat="@drawable/parking" />
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="179dp"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:text="Bienvenido"
-            android:textColor="#13B9BF"
-            android:textSize="34sp" />
-
         <EditText
-            android:id="@+id/editTextUsuario"
+            android:id="@+id/editTextCedula"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Usuario"
-            android:inputType="textEmailAddress" />
+            android:hint="Cédula"
+            android:inputType="text" />
 
         <EditText
-            android:id="@+id/editTextPass"
+            android:id="@+id/editTextCorreo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Correo"
+            android:inputType="textEmailAddress" />
+
+
+        <EditText
+            android:id="@+id/editTextPassf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Contraseña"
             android:inputType="textPassword" />
-
-        <Button
-            android:id="@+id/btnLogin"
+        <EditText
+            android:id="@+id/editTextCodigoT"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#5DCFDF"
-            android:text="Iniciar Sesión"
-            android:textColor="#1A1A71" />
-
-        <TextView
-            android:id="@+id/btnLoginGoogle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50px"
-           android:clickable="true"
-            android:gravity="center"
-            android:text="Iniciar Sesión con Google"
-            android:textColor="#1A1A71" />
+            android:ems="10"
+            android:hint="Código de Targeta"
+            android:inputType="text" />
 
         <Button
             android:id="@+id/btnSignUp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#7B30C5"
-            android:text="Registrarse"
-            android:textColor="#F3EDED"
-            android:layout_marginTop="100px"/>
+            android:text="Register Now!"
+            android:layout_marginTop="100px"
+            android:textColor="#F3EDED" />
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
