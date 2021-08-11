@@ -1,11 +1,13 @@
 package com.example.parqueosinteligentes;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,16 +20,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class Menu extends AppCompatActivity {
 
     private TextView textViewNombre;
     private FirebaseAuth mAuth;
     private Button btnMapa;
     private Button cerrarSesion;
-    DatabaseReference db_reference;
-    DatabaseReference db_referenceParqueo;
-    FirebaseUser user;
-    FirebaseDatabase root;
+
     private String email;
     private String usuario;
     private String tipo = "";
@@ -35,6 +36,14 @@ public class Menu extends AppCompatActivity {
     private TextView P2;
     private TextView P3;
     private TextView P4;
+
+    DatabaseReference db_reference;
+    DatabaseReference db_referenceParqueo;
+    FirebaseUser user;
+    FirebaseDatabase root;
+    RecyclerView recyclerView;
+    MyAdapter myAdapter;
+    ArrayList<Parqueo> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +57,18 @@ public class Menu extends AppCompatActivity {
 
         email = user.getEmail();
         usuario = email.split("@")[0];
+        recyclerView = findViewById(R.id.listParkeo);
+
         iniciarBaseDeDatosUsuarios();
+        iniciarBaseDeDatosParqueos();
         InitializateComponents();
 
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        list= new ArrayList<>();
+        myAdapter= new MyAdapter(this, list);
+        recyclerView.setAdapter(myAdapter);
+        mostrarParkeo();
         textViewNombre.setText(usuario);
         cerrarSesion = (Button) findViewById(R.id.btnCerrarSesion);
 
@@ -70,7 +88,7 @@ public class Menu extends AppCompatActivity {
     }
 
     public void revisarMapa(View v) {
-        Intent mapa = new Intent(this, Parqueadero.class);
+        Intent mapa = new Intent(this, ParqueaderoMap.class);
         startActivity(mapa);
     }
 
@@ -118,13 +136,14 @@ public class Menu extends AppCompatActivity {
     public void mostrarParkeo() {
         db_referenceParqueo.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(DataSnapshot snapshot) {
                 //Leer los parqueos
+                for(DataSnapshot dataSnapshot1: snapshot.getChildren()) {
 
-                P1.setText(dataSnapshot.child("P1").getValue().toString());
-
-
-
+                    Parqueo parqueo= dataSnapshot1.getValue(Parqueo.class);
+                    list.add(parqueo);
+                }
+            myAdapter.notifyDataSetChanged();
             }
 
             @Override

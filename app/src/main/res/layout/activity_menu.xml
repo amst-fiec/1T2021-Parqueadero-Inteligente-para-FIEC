@@ -32,98 +32,17 @@
             android:textAllCaps="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
-        <GridLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:columnCount="4"
-            android:orientation="horizontal" >
-            <TextView
-                android:id="@+id/txtP1"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:text="P1"
-                android:textColor="#13B9BF"
-                android:textSize="34sp" />
-            <TextView
-                android:id="@+id/txtP2"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:text="P2"
-                android:textColor="#13B9BF"
-                android:textSize="34sp" />
-            android:textSize="34sp" />
-            <TextView
-                android:id="@+id/txtP3"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:text="P3"
-                android:textColor="#13B9BF"
-                android:textSize="34sp" />
-            android:textSize="34sp" />
-            <TextView
-                android:id="@+id/txtP4"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:text="P4"
-                android:textColor="#13B9BF"
-                android:textSize="34sp" />
-            android:textSize="34sp" />
-            <TextView
-                android:id="@+id/txtP5"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:text="P5"
-                android:textColor="#13B9BF"
-                android:textSize="34sp" />
-            <TextView
-                android:id="@+id/txtP6"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:text="P6"
-                android:textColor="#13B9BF"
-                android:textSize="34sp" />
 
-            <TextView
-                android:id="@+id/txtP7"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:text="P7"
-                android:textColor="#13B9BF"
-                android:textSize="34sp" />
-
-            <TextView
-                android:id="@+id/txtP8"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:text="P8"
-                android:textColor="#13B9BF"
-                android:textSize="34sp" />
-
-        </GridLayout>
-        <TextView
-            android:id="@+id/txt_nombre"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/listParkeo"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Información"
-            android:textSize="30sp" />
+            android:layout_height="401dp"
+            android:layout_row="0"
+            android:layout_column="0" />
+
+
+
+
         <Button
             android:id="@+id/btnMapa"
             android:layout_width="match_parent"

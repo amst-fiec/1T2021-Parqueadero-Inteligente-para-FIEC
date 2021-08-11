@@ -54,16 +54,15 @@
             android:background="#5DCFDF"
             android:text="Iniciar Sesión"
             android:textColor="#1A1A71" />
-
-        <TextView
+        <Button
             android:id="@+id/btnLoginGoogle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50px"
-           android:clickable="true"
+            android:layout_marginTop="25px"
+
             android:gravity="center"
             android:text="Iniciar Sesión con Google"
-            android:textColor="#1A1A71" />
+            android:textColor="#5DCFDF" />
 
         <Button
             android:id="@+id/btnSignUp"

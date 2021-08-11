@@ -29,7 +29,7 @@ import com.example.parqueosinteligentes.databinding.ActivityParqueaderoBinding;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
-public class Parqueadero extends FragmentActivity implements   GoogleMap.OnMarkerClickListener, OnMapReadyCallback,  AdapterView.OnItemSelectedListener {
+public class ParqueaderoMap extends FragmentActivity implements   GoogleMap.OnMarkerClickListener, OnMapReadyCallback,  AdapterView.OnItemSelectedListener {
 
     private GoogleMap mMap;
     private ActivityParqueaderoBinding binding;
