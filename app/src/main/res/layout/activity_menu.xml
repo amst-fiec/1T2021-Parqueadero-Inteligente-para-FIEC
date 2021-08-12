@@ -13,6 +13,7 @@
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp">
 
+
         <TextView
             android:id="@+id/textViewBienvenido"
             android:layout_width="match_parent"
@@ -26,66 +27,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:textColor="#13B9BF"
+            android:textSize="34sp"
+            android:textAllCaps="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
-        <LinearLayout
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/listParkeo"
             android:layout_width="match_parent"
-            android:layout_height="71dp"
-            android:background="#21ECF3"
-            android:orientation="horizontal">
+            android:layout_height="401dp"
+            android:layout_row="0"
+            android:layout_column="0" />
 
-            <LinearLayout
-                android:layout_width="212dp"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/parqueo1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="5dp"
-                    android:background="#6BF870"
-                    android:gravity="center_horizontal"
-                    android:text='P1 "LIBRE"' />
 
-                <TextView
-                    android:id="@+id/parqueo3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="15dp"
-                    android:background="#6BF870"
-                    android:gravity="center"
-                    android:text='P3 "LIBRE"' />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/parqueo2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="5dp"
-                    android:background="#6BF870"
-                    android:gravity="center_horizontal"
-                    android:text='P2 "LIBRE" ' />
-
-                <TextView
-                    android:id="@+id/parqueo4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="15dp"
-                    android:background="#EC5C52"
-                    android:gravity="center_horizontal"
-                    android:text='P4 "LIBRE"' />
-            </LinearLayout>
-        </LinearLayout>
 
         <Button
             android:id="@+id/btnMapa"
