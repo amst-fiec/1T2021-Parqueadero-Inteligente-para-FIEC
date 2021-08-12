@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,7 +21,6 @@ import com.google.firebase.database.ValueEventListener;
 
 public class Menu extends AppCompatActivity {
 
-    private TextView textViewNombre;
     private FirebaseAuth mAuth;
     private Button btnMapa;
     private Button cerrarSesion;
@@ -29,14 +29,21 @@ public class Menu extends AppCompatActivity {
     FirebaseDatabase root;
     private String email;
     private String usuario;
-    private String tipo="";
+    private String tipo="comun";//Temporal solo para pruebas
 
-    //
+    private TextView textViewNombre;
+    private TextView textViewPrioridad;
 
     private TextView textViewEstac1;
     private TextView textViewEstac2;
     private TextView textViewEstac3;
     private TextView textViewEstac4;
+
+    private LinearLayout layoutEstac1;
+    private LinearLayout layoutEstac2;
+    private LinearLayout layoutEstac3;
+    private LinearLayout layoutEstac4;
+
 
     String ArrayIDEstacionamiento[]  = {"P1","P2","P3","P4"};
 
@@ -57,6 +64,7 @@ public class Menu extends AppCompatActivity {
         InitializateComponents();
 
         textViewNombre.setText(usuario);
+        //textViewPrioridad.setText(tipo);
         cerrarSesion = (Button) findViewById(R.id.btnCerrarSesion);
 
         cerrarSesion.setOnClickListener(new View.OnClickListener() {
@@ -67,23 +75,41 @@ public class Menu extends AppCompatActivity {
                 finish();
             }
         });
-        //notificacion();
-        //ocuparEstacionamiento("P1");
 
+        notificacion();
+        actualizarPrioridadEstacionamientoUI();
         actualizarEstadoEstacionamientoUI();
+        //ocuparEstacionamiento("P1");
         }
 
     private void InitializateComponents(){
         textViewNombre = (TextView) findViewById(R.id.textViewNombre);
+        textViewPrioridad = (TextView) findViewById(R.id.textViewPrioridad);
 
         textViewEstac1 = (TextView) findViewById(R.id.parqueo1);
         textViewEstac2 = (TextView) findViewById(R.id.parqueo2);
         textViewEstac3 = (TextView) findViewById(R.id.parqueo3);
         textViewEstac4 = (TextView) findViewById(R.id.parqueo4);
 
+        layoutEstac1 = (LinearLayout) findViewById(R.id.layoutEstac1);
+        layoutEstac2 = (LinearLayout) findViewById(R.id.layoutEstac2);
+        layoutEstac3 = (LinearLayout) findViewById(R.id.layoutEstac3);
+        layoutEstac4 = (LinearLayout) findViewById(R.id.layoutEstac4);
 
 
-    }
+        db_reference.child(usuario).child("tipo").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                tipo = snapshot.getValue(String.class);
+            }
+            @Override
+            public void onCancelled(DatabaseError error) {
+
+            }
+        });
+
+
+        }
     public void revisarMapa(View v) {
         Intent mapa = new Intent(this, Parqueadero.class);
         startActivity(mapa);
@@ -103,12 +129,13 @@ public class Menu extends AppCompatActivity {
                         while(tipo.isEmpty()) {
                             tipo = snapshot.getValue(String.class);
                             if(tipo==null){//TODO:Se debe implementar registrar los datos en la base, por ahora solo estan quemados
-                                tipo="Privilegiado";//Si un usuario que no esta quemado inicia sesion, se le setea el tipo "privilegiado"
+                                tipo="privilegiado";//Si un usuario que no esta quemado inicia sesion, se le setea el tipo "privilegiado"
                             }
                         }
                         Menu.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                textViewPrioridad.setText(tipo);//TODO: SE DEBE LEER ESTO AFUERA DE LA FUNCION NOTIFICACION
                                 Toast.makeText(getApplicationContext(), "Usuario tipo:" + tipo, Toast.LENGTH_SHORT).show();
                             }
                         });
@@ -188,12 +215,12 @@ public class Menu extends AppCompatActivity {
             String estacionamiento = ArrayIDEstacionamiento[i];
 
             DatabaseReference db_reference_estacionamiento = root.getReference("Parkeo").child(estacionamiento).child("estado");
+
             db_reference_estacionamiento.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot snapshot) {
-                    Double estado = snapshot.getValue(Double.class);
-                    //Toast.makeText(getApplicationContext(), estacionamiento + " " + (estado == 0 ? "DISPONIBLE":"OCUPADO") , Toast.LENGTH_SHORT).show();
-                    setEstadoEstacionamientoUI(estacionamiento,estado);
+                    Double estado_estacionamiento = snapshot.getValue(Double.class);
+                    setEstadoEstacionamientoUI(estacionamiento,estado_estacionamiento);
                 }
 
                 @Override
@@ -226,5 +253,53 @@ public class Menu extends AppCompatActivity {
         }
     }
 
+    public void actualizarPrioridadEstacionamientoUI(){
+        for(int i = 0; i< ArrayIDEstacionamiento.length; i++){
+            String estacionamiento = ArrayIDEstacionamiento[i];
+
+            DatabaseReference db_reference_estacionamiento = root.getReference("Parkeo").child(estacionamiento).child("tipo");
+
+            db_reference_estacionamiento.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+                    String prioridad_estac = snapshot.getValue(String.class);
+                    if(tipo.equals("comun")){//Solo para el usuario comun, se aplica el filtro de ocultar los privilegiados
+                        if(prioridad_estac.equals("privilegiado")){
+                            visibilidadEstacionamientoUI(estacionamiento,0);
+                        }
+                        else{
+                            visibilidadEstacionamientoUI(estacionamiento,1);
+                        }
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+                }
+            });
+
+        }
+    }
+
+    public void visibilidadEstacionamientoUI(String estacionamiento, int activado){
+        String ArrayIDEstacionamiento[]  = {"P1","P2","P3","P4"};
+        LinearLayout[] layoutEstacionamientos ={layoutEstac1,layoutEstac2,layoutEstac3,layoutEstac4};
+
+        int indexEstacionamiento = -1;
+        for(int i = 0;i < ArrayIDEstacionamiento.length;i++){//Esto es muy ineficiente, pero es temporal para hacer pruebas
+            if(ArrayIDEstacionamiento[i]==estacionamiento){
+                indexEstacionamiento = i;
+            }
+        }
+
+        LinearLayout layoutEstacionamiento = layoutEstacionamientos[indexEstacionamiento];
+        if(activado == 0){
+            layoutEstacionamiento.setVisibility(View.INVISIBLE);//
+        }
+        else{
+            layoutEstacionamiento.setVisibility(View.VISIBLE);
+        }
+    }
 
 }

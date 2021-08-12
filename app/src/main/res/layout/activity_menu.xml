@@ -28,6 +28,13 @@
             android:gravity="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
+        <TextView
+            android:id="@+id/textViewPrioridad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -35,6 +42,7 @@
             android:orientation="horizontal">
 
             <LinearLayout
+                android:id="@+id/layoutEstac1"
                 android:layout_width="212dp"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
@@ -51,15 +59,17 @@
 
                 <TextView
                     android:id="@+id/parqueo1"
-                    android:layout_width="wrap_content"
+                    android:layout_width="210dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="15dp"
-                    android:background="#6BF870"
-                    android:gravity="center" />
+                    android:background="#E040FB"
+                    android:gravity="center"
+                    android:text="RESTRINGIDO" />
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/layoutEstac2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
@@ -76,12 +86,13 @@
 
                 <TextView
                     android:id="@+id/parqueo2"
-                    android:layout_width="wrap_content"
+                    android:layout_width="198dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="15dp"
-                    android:background="#EC5C52"
-                    android:gravity="center_horizontal" />
+                    android:background="#E040FB"
+                    android:gravity="center_horizontal"
+                    android:text="RESTRINGIDO" />
             </LinearLayout>
         </LinearLayout>
 
@@ -92,6 +103,7 @@
             android:orientation="horizontal">
 
             <LinearLayout
+                android:id="@+id/layoutEstac3"
                 android:layout_width="212dp"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
@@ -108,15 +120,17 @@
 
                 <TextView
                     android:id="@+id/parqueo3"
-                    android:layout_width="wrap_content"
+                    android:layout_width="212dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="15dp"
-                    android:background="#6BF870"
-                    android:gravity="center" />
+                    android:background="#E040FB"
+                    android:gravity="center"
+                    android:text="RESTRINGIDO" />
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/layoutEstac4"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
@@ -133,12 +147,13 @@
 
                 <TextView
                     android:id="@+id/parqueo4"
-                    android:layout_width="wrap_content"
+                    android:layout_width="198dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="15dp"
-                    android:background="#EC5C52"
-                    android:gravity="center_horizontal" />
+                    android:background="#E040FB"
+                    android:gravity="center_horizontal"
+                    android:text="RESTRINGIDO" />
             </LinearLayout>
         </LinearLayout>
 
