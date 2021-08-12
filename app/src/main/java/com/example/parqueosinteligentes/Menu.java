@@ -105,21 +105,6 @@ public class Menu extends AppCompatActivity {
         layoutEstac4 = (LinearLayout) findViewById(R.id.layoutEstac4);
 
 
-        db_reference.child(uid).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                nombre = snapshot.child("nombre").getValue(String.class);
-                tipo = snapshot.child("tipo").getValue(String.class);
-                textViewNombre.setText(nombre);
-                textViewPrioridad.setText(tipo);
-            }
-            @Override
-            public void onCancelled(DatabaseError error) {
-
-            }
-        });
-
-
         }
     public void revisarMapa(View v) {
         Intent mapa = new Intent(this, Parqueadero.class);
