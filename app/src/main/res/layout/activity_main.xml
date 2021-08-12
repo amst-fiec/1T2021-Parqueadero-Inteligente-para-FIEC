@@ -71,7 +71,8 @@
             android:background="#7B30C5"
             android:text="Registrarse"
             android:textColor="#F3EDED"
-            android:layout_marginTop="50px"/>
+            android:layout_marginTop="50px"
+            android:onClick="registrarse"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
