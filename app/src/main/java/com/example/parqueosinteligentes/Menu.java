@@ -3,6 +3,7 @@ package com.example.parqueosinteligentes;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -69,7 +70,7 @@ public class Menu extends AppCompatActivity {
         //notificacion();
         //ocuparEstacionamiento("P1");
 
-        leerEstadoEstacionamientos();
+        actualizarEstadoEstacionamientoUI();
         }
 
     private void InitializateComponents(){
@@ -124,6 +125,7 @@ public class Menu extends AppCompatActivity {
 
     }
 
+    /*
     public void ocuparEstacionamiento(String estacionamiento){
         //DatabaseReference db_reference_estacionamiento = root.getReference("Parkeo").child(estacionamiento);
         DatabaseReference db_reference_general = root.getReference();
@@ -161,6 +163,8 @@ public class Menu extends AppCompatActivity {
 
     }
 
+     */
+
     public void setEstadoEstacionamientoDB(String estacionamiento, int estado){
         DatabaseReference db_reference_estacionamiento = root.getReference("Parkeo").child(estacionamiento);
 
@@ -178,7 +182,7 @@ public class Menu extends AppCompatActivity {
 
     }
 
-    public void leerEstadoEstacionamientos(){
+    public void actualizarEstadoEstacionamientoUI(){
 
         for(int i = 0; i< ArrayIDEstacionamiento.length; i++){
             String estacionamiento = ArrayIDEstacionamiento[i];
@@ -188,7 +192,7 @@ public class Menu extends AppCompatActivity {
                 @Override
                 public void onDataChange(DataSnapshot snapshot) {
                     Double estado = snapshot.getValue(Double.class);
-                    Toast.makeText(getApplicationContext(), "(" + estacionamiento + ") tiene el estado " + (estado == 0 ? "DISPONIBLE":"OCUPADO") , Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), estacionamiento + " " + (estado == 0 ? "DISPONIBLE":"OCUPADO") , Toast.LENGTH_SHORT).show();
                     setEstadoEstacionamientoUI(estacionamiento,estado);
                 }
 
@@ -211,7 +215,15 @@ public class Menu extends AppCompatActivity {
         }
 
         TextView txtViewestacionamiento = textViewEstacionamientos[indexEstacionamiento];
-        txtViewestacionamiento.setText(estado == 0 ? "DISPONIBLE":"OCUPADO");
+        //txtViewestacionamiento.setText(estado == 0 ? "DISPONIBLE":"OCUPADO");
+        if(estado == 0){
+            txtViewestacionamiento.setBackgroundColor(Color.parseColor("#6BF870"));
+            txtViewestacionamiento.setText("DISPONIBLE");
+        }
+        else{
+            txtViewestacionamiento.setBackgroundColor(Color.RED);
+            txtViewestacionamiento.setText("OCUPADO");
+        }
     }
 
 
