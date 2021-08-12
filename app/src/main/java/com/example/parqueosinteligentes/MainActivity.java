@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
 
                     datos_usuario.put("nombre",user.getDisplayName());
                     datos_usuario.put("correo",user.getEmail());
-                    datos_usuario.put("tipo","comun");//Prioridad comun por defecto?
+                    datos_usuario.put("tipo","");//Prioridad comun por defecto?
 
 
                     db_reference_usuarios.child(mAuth.getUid()).setValue(datos_usuario);
