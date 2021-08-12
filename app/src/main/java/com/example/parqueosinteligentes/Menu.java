@@ -28,6 +28,9 @@ public class Menu extends AppCompatActivity {
     FirebaseUser user;
     FirebaseDatabase root;
     private String uid;
+    private String correo;
+    private String nombre;
+
     private String email;
     private String usuario;
     private String tipo="comun";//Temporal solo para pruebas
@@ -57,7 +60,7 @@ public class Menu extends AppCompatActivity {
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
         uid = mAuth.getUid();
-        System.out.println(uid + "----------------" );
+
         root=FirebaseDatabase.getInstance();
         user = mAuth.getCurrentUser();
 
@@ -66,8 +69,6 @@ public class Menu extends AppCompatActivity {
         iniciarBaseDeDatosUsuarios();
         InitializateComponents();
 
-        textViewNombre.setText(usuario);
-        //textViewPrioridad.setText(tipo);
         cerrarSesion = (Button) findViewById(R.id.btnCerrarSesion);
 
         cerrarSesion.setOnClickListener(new View.OnClickListener() {
@@ -100,10 +101,13 @@ public class Menu extends AppCompatActivity {
         layoutEstac4 = (LinearLayout) findViewById(R.id.layoutEstac4);
 
 
-        db_reference.child(usuario).child("tipo").addValueEventListener(new ValueEventListener() {
+        db_reference.child(uid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                tipo = snapshot.getValue(String.class);
+                nombre = snapshot.child("nombre").getValue(String.class);
+                tipo = snapshot.child("tipo").getValue(String.class);
+                textViewNombre.setText(nombre);
+                textViewPrioridad.setText(tipo);
             }
             @Override
             public void onCancelled(DatabaseError error) {
@@ -126,7 +130,7 @@ public class Menu extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                db_reference.child(usuario).child("tipo").addValueEventListener(new ValueEventListener() {
+                db_reference.child(uid).child("tipo").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
                         while(tipo.isEmpty()) {
