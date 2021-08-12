@@ -332,4 +332,17 @@ public class Menu extends AppCompatActivity {
         }
     }
 
+    private void actualizarPrioridadHorario(){
+
+        //Esta funcion hace que a partir de las 12, todos los estacionamientos cambien su prioridad a COMUN
+        for(int i = 0; i< ArrayIDEstacionamiento.length; i++) {
+            String estacionamiento = ArrayIDEstacionamiento[i];
+
+            DatabaseReference db_reference_estacionamiento = root.getReference("Parkeo").child(estacionamiento).child("tipo");
+            db_reference_estacionamiento.setValue("comun");
+
+        }
+
+    }
+
 }
