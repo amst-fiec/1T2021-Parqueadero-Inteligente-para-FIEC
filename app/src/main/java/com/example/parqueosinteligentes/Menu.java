@@ -260,7 +260,7 @@ public class Menu extends AppCompatActivity {
         }
     }
 
-    public void actualizarPrioridadEstacionamientoUI(){
+    public void actualizarVisivilidadEstacionamientoUI(){
         for(int i = 0; i< ArrayIDEstacionamiento.length; i++){
             String estacionamiento = ArrayIDEstacionamiento[i];
 
@@ -272,11 +272,13 @@ public class Menu extends AppCompatActivity {
                     String prioridad_estac = snapshot.getValue(String.class);
                     if(tipo.equals("comun")){//Solo para el usuario comun, se aplica el filtro de ocultar los privilegiados
                         if(prioridad_estac.equals("privilegiado")){
-                            visibilidadEstacionamientoUI(estacionamiento,0);
+                            setVisibilidadEstacionamiento(estacionamiento,0);
                         }
                         else{
-                            visibilidadEstacionamientoUI(estacionamiento,1);
+                            setVisibilidadEstacionamiento(estacionamiento,1);
                         }
+                    }else{//Si es privilegiado se muestran todos los estacionamientos
+                        setVisibilidadEstacionamiento(estacionamiento,1);
                     }
 
                 }
@@ -289,7 +291,7 @@ public class Menu extends AppCompatActivity {
         }
     }
 
-    public void visibilidadEstacionamientoUI(String estacionamiento, int activado){
+    public void setVisibilidadEstacionamiento(String estacionamiento, int activado){
         String ArrayIDEstacionamiento[]  = {"P1","P2","P3","P4"};
         LinearLayout[] layoutEstacionamientos ={layoutEstac1,layoutEstac2,layoutEstac3,layoutEstac4};
 
