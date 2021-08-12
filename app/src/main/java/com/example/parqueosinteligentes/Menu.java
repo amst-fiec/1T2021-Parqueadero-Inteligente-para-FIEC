@@ -27,6 +27,7 @@ public class Menu extends AppCompatActivity {
     DatabaseReference db_reference;
     FirebaseUser user;
     FirebaseDatabase root;
+    private String uid;
     private String email;
     private String usuario;
     private String tipo="comun";//Temporal solo para pruebas
@@ -55,6 +56,8 @@ public class Menu extends AppCompatActivity {
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
+        uid = mAuth.getUid();
+        System.out.println(uid + "----------------" );
         root=FirebaseDatabase.getInstance();
         user = mAuth.getCurrentUser();
 
