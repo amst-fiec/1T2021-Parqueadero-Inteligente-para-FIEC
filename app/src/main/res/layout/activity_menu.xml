@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".Menu">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -32,17 +33,19 @@
             android:textAllCaps="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/listParkeo"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="401dp"
-            android:layout_row="0"
-            android:layout_column="0" />
+            android:layout_height="309dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_row="0"
+                android:layout_column="0" />
 
 
-
-
+        </LinearLayout>
         <Button
             android:id="@+id/btnMapa"
             android:layout_width="match_parent"

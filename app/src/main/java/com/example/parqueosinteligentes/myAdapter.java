@@ -1,9 +1,8 @@
-package com.example.demofirebasetorecycler;
+package com.example.parqueosinteligentes;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,21 +12,24 @@ import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 
-public class myadapter extends FirebaseRecyclerAdapter<model,myadapter.myviewholder>
+
+public class myAdapter extends FirebaseRecyclerAdapter<Parqueo,myAdapter.myviewholder>
 {
-    public myadapter(@NonNull FirebaseRecyclerOptions<model> options) {
+    public myAdapter(@NonNull FirebaseRecyclerOptions<Parqueo> options) {
         super(options);
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull myviewholder holder, int position, @NonNull model model)
-    {
-       holder.name.setText(model.getName());
-       holder.course.setText(model.getCourse());
-       holder.email.setText(model.getEmail());
-       Glide.with(holder.img.getContext()).load(model.getPurl()).into(holder.img);
+    protected void onBindViewHolder(@NonNull myviewholder holder, int position, @NonNull Parqueo parqueo)
+    {  String valueEstado="Libre";
+        if(parqueo.getEstado()==1){
+            valueEstado="Ocupado";
+        }
+       holder.estado.setText(valueEstado);
+       holder.idParkeo.setText("#"+String.valueOf(parqueo.getIdParkeo()));
+       holder.tipo.setText(String.valueOf(parqueo.getTipo()));
+
     }
 
     @NonNull
@@ -40,15 +42,15 @@ public class myadapter extends FirebaseRecyclerAdapter<model,myadapter.myviewhol
 
     class myviewholder extends RecyclerView.ViewHolder
     {
-        CircleImageView img;
-        TextView name,course,email;
+
+        TextView estado,idParkeo,tipo;
         public myviewholder(@NonNull View itemView)
         {
             super(itemView);
-            img=(CircleImageView)itemView.findViewById(R.id.img1);
-            name=(TextView)itemView.findViewById(R.id.nametext);
-            course=(TextView)itemView.findViewById(R.id.coursetext);
-            email=(TextView)itemView.findViewById(R.id.emailtext);
+
+            estado=(TextView)itemView.findViewById(R.id.estadotext);
+            idParkeo=(TextView)itemView.findViewById(R.id.idParkeotext);
+            tipo=(TextView)itemView.findViewById(R.id.tipotext);
         }
     }
 }

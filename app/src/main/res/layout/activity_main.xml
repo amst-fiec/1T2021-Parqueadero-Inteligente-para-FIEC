@@ -58,11 +58,11 @@
             android:id="@+id/btnLoginGoogle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25px"
-
+            android:layout_marginTop="20px"
+            android:background="#FFFFFF"
             android:gravity="center"
             android:text="Iniciar Sesión con Google"
-            android:textColor="#5DCFDF" />
+            android:textColor="#1A1A71" />
 
         <Button
             android:id="@+id/btnSignUp"
@@ -71,7 +71,7 @@
             android:background="#7B30C5"
             android:text="Registrarse"
             android:textColor="#F3EDED"
-            android:layout_marginTop="100px"/>
+            android:layout_marginTop="50px"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

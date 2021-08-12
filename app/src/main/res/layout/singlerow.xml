@@ -3,60 +3,81 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="5dp"
-    android:elevation="5dp"
-    app:cardUseCompatPadding="true">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
+    app:cardElevation="8dp"
+    app:cardCornerRadius="8dp"
+    android:layout_margin="16dp">
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="15dp">
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@mipmap/ic_launcher"
-            android:layout_centerVertical="true"
-            android:id="@+id/img1"
-            app:civ_border_width="2dp"
-            app:civ_border_color="#FF000000"
-            />
-
-        <TextView
-            android:layout_width="match_parent"
+        android:layout_marginLeft="16dp"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/nametext"
-            android:text="This is Demo Name"
-            android:textStyle="bold"
-            android:textSize="25sp"
-            android:textColor="#000"
-            android:layout_toRightOf="@id/img1"
-            android:layout_marginLeft="10dp"/>
-
-        <TextView
-            android:layout_width="match_parent"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Número de Parqueo:"
+                android:textColor="@color/black"
+                android:textSize="26sp"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/idParkeotext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="Valor"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+               />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/coursetext"
-            android:text="This is Course Name"
-            android:textSize="25sp"
-            android:textColor="#000"
-            android:layout_toRightOf="@id/img1"
-            android:layout_below="@id/nametext"
-            android:layout_marginLeft="10dp"/>
-
-
-        <TextView
-            android:layout_width="match_parent"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tipo de Parqueo"
+                android:textColor="@color/black"
+                android:textSize="26sp"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/tipotext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="Valor"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/emailtext"
-            android:text="This is Email Name"
-            android:textSize="25sp"
-            android:textColor="#000"
-            android:layout_toRightOf="@id/img1"
-            android:layout_below="@id/coursetext"
-            android:layout_marginLeft="10dp"/>
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Estado"
+                android:textColor="@color/black"
+                android:textSize="26sp"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/estadotext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="Valor"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                />
+        </LinearLayout>
 
-
-    </RelativeLayout>
+    </LinearLayout>
 
 </androidx.cardview.widget.CardView>

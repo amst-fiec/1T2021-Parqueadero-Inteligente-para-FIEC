@@ -1,48 +1,42 @@
-package com.example.demofirebasetorecycler;
+package com.example.parqueosinteligentes;
 
-public class model
+public class Parqueo
 {
-  String name,course,email,purl;
-    model()
+  String tipo;
+  int estado, idParkeo;
+    Parqueo()
     {
 
     }
-    public model(String name, String course, String email, String purl) {
-        this.name = name;
-        this.course = course;
-        this.email = email;
-        this.purl = purl;
+    public Parqueo(int estado, int idParkeo, String tipo) {
+        this.estado = estado;
+        this.idParkeo = idParkeo;
+        this.tipo = tipo;
+
     }
 
-    public String getName() {
-        return name;
+    public int getEstado() {
+        return estado;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setEstado(int estado) {
+        this.estado = estado;
     }
 
-    public String getCourse() {
-        return course;
+    public int getIdParkeo() {
+        return idParkeo;
     }
 
-    public void setCourse(String course) {
-        this.course = course;
+    public void setIdParkeo(int idParkeo) {
+        this.idParkeo = idParkeo;
     }
 
-    public String getEmail() {
-        return email;
+    public String getTipo() {
+        return tipo;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
-    public String getPurl() {
-        return purl;
-    }
-
-    public void setPurl(String purl) {
-        this.purl = purl;
-    }
 }
