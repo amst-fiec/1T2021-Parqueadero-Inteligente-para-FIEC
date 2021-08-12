@@ -27,13 +27,15 @@ public class Menu extends AppCompatActivity {
     DatabaseReference db_reference;
     FirebaseUser user;
     FirebaseDatabase root;
+
     private String uid;
     private String correo;
     private String nombre;
+    private String tipo="";//
+
 
     private String email;
     private String usuario;
-    private String tipo="comun";//Temporal solo para pruebas
 
     private TextView textViewNombre;
     private TextView textViewPrioridad;
@@ -80,8 +82,10 @@ public class Menu extends AppCompatActivity {
             }
         });
 
-        notificacion();
-        actualizarPrioridadEstacionamientoUI();
+        //notificacion();
+        actualizarDatosUsuarioUI();
+        //actualizarPrioridadHorario();
+        actualizarVisivilidadEstacionamientoUI();
         actualizarEstadoEstacionamientoUI();
         //ocuparEstacionamiento("P1");
         }
@@ -135,15 +139,14 @@ public class Menu extends AppCompatActivity {
                     public void onDataChange(DataSnapshot snapshot) {
                         while(tipo.isEmpty()) {
                             tipo = snapshot.getValue(String.class);
-                            if(tipo==null){//TODO:Se debe implementar registrar los datos en la base, por ahora solo estan quemados
-                                tipo="privilegiado";//Si un usuario que no esta quemado inicia sesion, se le setea el tipo "privilegiado"
-                            }
+//                            if(tipo==null){//TODO:Se debe implementar registrar los datos en la base, por ahora solo estan quemados
+//                                tipo="privilegiado";//Si un usuario que no esta quemado inicia sesion, se le setea el tipo "privilegiado"
+//                            }
                         }
                         Menu.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                textViewPrioridad.setText(tipo);//TODO: SE DEBE LEER ESTO AFUERA DE LA FUNCION NOTIFICACION
-                                Toast.makeText(getApplicationContext(), "Usuario tipo:" + tipo, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "!Usuario tipo:" + tipo, Toast.LENGTH_SHORT).show();
                             }
                         });
 
@@ -214,6 +217,24 @@ public class Menu extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void actualizarDatosUsuarioUI(){
+        db_reference.child(uid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                nombre = snapshot.child("nombre").getValue(String.class);
+                tipo = snapshot.child("tipo").getValue(String.class);
+                textViewNombre.setText(nombre);
+                textViewPrioridad.setText(tipo);
+                Toast.makeText(getApplicationContext(), "Usuario tipo:" + tipo, Toast.LENGTH_SHORT).show();//NOTIFICACION
+            actualizarVisivilidadEstacionamientoUI();
+            }
+            @Override
+            public void onCancelled(DatabaseError error) {
+
+            }
+        });
     }
 
     public void actualizarEstadoEstacionamientoUI(){
