@@ -1,39 +1,60 @@
 package com.example.parqueosinteligentes;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class Menu extends AppCompatActivity {
 
+    private static  String  tipo ;
+
     private TextView textViewNombre;
     private FirebaseAuth mAuth;
+
+    public static void setTipo(String tipo) {
+        Menu.tipo = tipo;
+    }
+
+    public static String getTipo() {
+        return tipo;
+    }
+
     private Button btnMapa;
     private Button cerrarSesion;
     DatabaseReference db_reference;
+    DatabaseReference db_referenceP;
     FirebaseUser user;
+
+
+
     FirebaseDatabase root;
     private String email;
     private String usuario;
-    private String tipo="";
+
     RecyclerView recview;
     myAdapter adapter;
+    ArrayList<Parqueo> list;
+    ArrayList<Usuario> listUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,30 +82,32 @@ public class Menu extends AppCompatActivity {
             }
         });
         notificacion();
+        listUser = new ArrayList<>();
+        getTipoDB();
+
+       // listTipo = new ArrayList<>();
 
 
         recview=(RecyclerView)findViewById(R.id.recview);
+        //recview.setLayoutManager(new LinearLayoutManager(this));
+        iniciarBaseDeDatosParqueo();
+        recview.setHasFixedSize(true);
         recview.setLayoutManager(new LinearLayoutManager(this));
-
-        FirebaseRecyclerOptions<Parqueo> options =
-                new FirebaseRecyclerOptions.Builder<Parqueo>()
-                        .setQuery(FirebaseDatabase.getInstance().getReference().child("Parkeo"), Parqueo.class)
-                        .build();
-
-        adapter=new myAdapter(options);
+        list = new ArrayList<>();
+        adapter = new myAdapter(this, list);
         recview.setAdapter(adapter);
-    }
-    @Override
-    protected void onStart() {
-        super.onStart();
-        adapter.startListening();
+
+//        Log.d("myTag", "This is my message2 " + listUser.size());
+
+        //tipo= (String)listTipo.get(0);
+     //   Log.d("myTag", "This is my message2 " + listTipo.get(0));
+     //   tipo= (String) listTipo.get(0);
+       // tipo= getTipo();
+      //  Log.d("myTag", "This is my message2 " + Menu.getTipo());
+
+
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        adapter.stopListening();
-    }
     private void InitializateComponents(){
         textViewNombre = (TextView) findViewById(R.id.textViewNombre);
     }
@@ -95,7 +118,9 @@ public class Menu extends AppCompatActivity {
     public void iniciarBaseDeDatosUsuarios(){
         db_reference = root.getReference("usuarios");
     }
-
+    public void iniciarBaseDeDatosParqueo(){
+        db_referenceP = root.getReference("Parkeo");
+    }
 
     public void notificacion(){
         new Thread(new Runnable() {
@@ -107,7 +132,7 @@ public class Menu extends AppCompatActivity {
                         while(tipo.isEmpty()) {
                             tipo = snapshot.getValue(String.class);
                             if(tipo==null){//TODO:Se debe implementar registrar los datos en la base, por ahora solo estan quemados
-                                tipo="Privilegiado";//Si un usuario que no esta quemado inicia sesion, se le setea el tipo "privilegiado"
+                                tipo="privilegiado";//Si un usuario que no esta quemado inicia sesion, se le setea el tipo "privilegiado"
                             }
                         }
                         Menu.this.runOnUiThread(new Runnable() {
@@ -128,4 +153,58 @@ public class Menu extends AppCompatActivity {
         }).start();
 
     }
+    public void getTipoDB( ) {
+
+        Query query = db_reference.orderByChild("correo").equalTo(email);
+        ValueEventListener myTag = query.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Usuario user = dataSnapshot.getValue(Usuario.class);
+                    listUser.add(user);
+                    setTipo((String) user.getTipo());
+                    addValueDB((String) user.getTipo());
+
+                    Log.d("myTag", "This is my message " + tipo);
+                }
+
+                adapter.notifyDataSetChanged();
+            }
+
+
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                //   System.out.println("Fallo la lectura: " + databaseError.getCode());
+            }
+        });
+
+    }
+
+        public void addValueDB(String tipo){
+        Query query = null;
+        if (tipo.equals("comun") || tipo.equals("")) {
+            query = db_referenceP.orderByChild("tipo").equalTo(tipo);}
+        else{
+            query = db_referenceP;
+        }
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                    Parqueo parqueo = dataSnapshot.getValue(Parqueo.class);
+                    list.add(parqueo);
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
 }
