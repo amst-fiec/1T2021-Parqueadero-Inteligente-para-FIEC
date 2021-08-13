@@ -214,10 +214,19 @@ public class Menu extends AppCompatActivity {
             public void onDataChange(DataSnapshot snapshot) {
                 nombre = snapshot.child("nombre").getValue(String.class);
                 tipo = snapshot.child("tipo").getValue(String.class);
-                textViewNombre.setText(nombre);
-                textViewPrioridad.setText(tipo);
-                Toast.makeText(getApplicationContext(), "Usuario tipo:" + tipo, Toast.LENGTH_SHORT).show();//NOTIFICACION
-            actualizarVisivilidadEstacionamientoUI();
+                //Validacion cuando un usuario no tiene prioridad asignada se le reenvia al menu principal
+                if(tipo.equals("")){
+                    System.out.println("Me boy");
+                    Intent sinAsignar = new Intent(Menu.this, SinAsignar.class);
+                    startActivity(sinAsignar);
+                    finish();
+                }else{
+                    textViewNombre.setText(nombre);
+                    textViewPrioridad.setText(tipo);
+                    Toast.makeText(getApplicationContext(), "Usuario tipo:" + tipo, Toast.LENGTH_SHORT).show();//NOTIFICACION
+                    actualizarVisivilidadEstacionamientoUI();
+                }
+
             }
             @Override
             public void onCancelled(DatabaseError error) {
