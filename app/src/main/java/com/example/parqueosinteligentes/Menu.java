@@ -88,7 +88,7 @@ public class Menu extends AppCompatActivity {
 
         //notificacion();
         actualizarDatosUsuarioUI();
-        //actualizarPrioridadHorario();
+        actualizarPrioridadHorario();
         actualizarVisivilidadEstacionamientoUI();
         actualizarEstadoEstacionamientoUI();
         //ocuparEstacionamiento("P1");
@@ -331,13 +331,20 @@ public class Menu extends AppCompatActivity {
         int minuto=Integer.parseInt(dateTime.split(":")[1]);
         
         //Esta funcion hace que a partir de las 12, todos los estacionamientos cambien su prioridad a COMUN
-        if(hora>=12&&minuto>=0){
+        if(hora>=12&&hora<20&&minuto>=0){
             
             for(int i = 0; i< ArrayIDEstacionamiento.length; i++) {
                 String estacionamiento = ArrayIDEstacionamiento[i];
 
                 DatabaseReference db_reference_estacionamiento = root.getReference("Parkeo").child(estacionamiento).child("tipo");
                 db_reference_estacionamiento.setValue("comun");
+            }
+        }else if(hora<12||hora>=20&&minuto>=0){
+            for(int i = 0; i<2; i++) {
+                String estacionamiento = ArrayIDEstacionamiento[i];
+
+                DatabaseReference db_reference_estacionamiento = root.getReference("Parkeo").child(estacionamiento).child("tipo");
+                db_reference_estacionamiento.setValue("privilegiado");
             }
         }
 
