@@ -45,10 +45,12 @@ public class Menu extends AppCompatActivity {
     DatabaseReference db_reference;
     DatabaseReference db_referenceP;
     FirebaseUser user;
-
-
-
     FirebaseDatabase root;
+    //Variables usadas en la rama
+    private String uid;
+    private String correo;
+    private String nombre;
+
     private String email;
     private String usuario;
 
@@ -63,6 +65,8 @@ public class Menu extends AppCompatActivity {
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
+        uid = mAuth.getUid();//Variable usada en rama erick
+
         root=FirebaseDatabase.getInstance();
         user = mAuth.getCurrentUser();
 
@@ -155,13 +159,21 @@ public class Menu extends AppCompatActivity {
 
     }
     public void getTipoDB( ) {
+/*
 
-        Query query = db_reference.orderByChild("correo").equalTo(email);
+Estructura de diagrama en Realtime Database
+db_reference->usuarios->uid->{correo,nombre,tipo}
+
+*/
+        //Query query = db_reference.orderByChild("correo").equalTo(email);
+        Query query = db_reference.child(uid);//Deberia acceder a lo mismo pero ahora usando uid
         ValueEventListener myTag = query.addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    //Aqui tu te entiendes kerly xd, mira para acceder al tipo desde snapshot yo usaba:
+                    //tipo = snapshot.child("tipo").getValue(String.class);
                     Usuario user = dataSnapshot.getValue(Usuario.class);
                     listUser.add(user);
                     setTipo((String) user.getTipo());
