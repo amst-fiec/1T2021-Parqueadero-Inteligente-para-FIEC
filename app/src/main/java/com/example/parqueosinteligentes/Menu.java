@@ -39,6 +39,7 @@ public class Menu extends AppCompatActivity {
         return tipo;
     }
 
+
     private Button btnMapa;
     private Button cerrarSesion;
     DatabaseReference db_reference;
