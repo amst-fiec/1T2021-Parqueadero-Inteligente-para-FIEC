@@ -217,5 +217,35 @@ public class Menu extends AppCompatActivity {
         }).start();
 
     }
+        /*
+    private void actualizarPrioridadHorario(){
+        TimeZone myTimeZone = TimeZone.getTimeZone("America/Guayaquil");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
+        simpleDateFormat.setTimeZone(myTimeZone);
+        String dateTime = simpleDateFormat.format(new Date());
+
+        int hora=Integer.parseInt(dateTime.split(":")[0]);
+        int minuto=Integer.parseInt(dateTime.split(":")[1]);
+
+        //Esta funcion hace que a partir de las 12, todos los estacionamientos cambien su prioridad a COMUN
+        if(hora>=12&&hora<20&&minuto>=0){
+
+            for(int i = 0; i< ArrayIDEstacionamiento.length; i++) {
+                String estacionamiento = ArrayIDEstacionamiento[i];
+
+                DatabaseReference db_reference_estacionamiento = root.getReference("Parkeo").child(estacionamiento).child("tipo");
+                db_reference_estacionamiento.setValue("comun");
+            }
+        }else if(hora<12||hora>=20&&minuto>=0){
+            for(int i = 0; i<2; i++) {
+                String estacionamiento = ArrayIDEstacionamiento[i];
+
+                DatabaseReference db_reference_estacionamiento = root.getReference("Parkeo").child(estacionamiento).child("tipo");
+                db_reference_estacionamiento.setValue("privilegiado");
+            }
+        }
+
+    }
+    */
 
 }
