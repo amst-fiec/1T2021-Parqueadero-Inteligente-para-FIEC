@@ -140,9 +140,18 @@ public class MainActivity extends AppCompatActivity {
                                         startActivity(intent);
                                     }
                                     else {
-                                        //Redireccionar al menu
-                                        Intent intent = new Intent(MainActivity.this, Menu.class);
-                                        startActivity(intent);
+                                        //Si existe y no tiene prioridad asignada se envia a la pagina
+                                        String tipo = snapshot.child(mAuth.getUid()).child("tipo").getValue(String.class);
+                                        if(tipo.equals("")){
+                                            //Redireccion a pagina de espera de asignacion
+                                            Intent intent= new Intent(MainActivity.this, esperaAsignacion.class);
+                                            startActivity(intent);
+                                        }else{
+                                            //Redireccionar al menu
+                                            Intent intent = new Intent(MainActivity.this, Menu.class);
+                                            startActivity(intent);
+                                        }
+
                                     }
                                 }
                                 @Override
