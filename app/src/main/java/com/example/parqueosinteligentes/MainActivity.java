@@ -20,8 +20,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -114,6 +121,8 @@ public class MainActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
+                            //System.out.println("-------------" + mAuth.getUid());
+                            addUserToDataBase();
                             //To Menu Activity
                             Intent intent= new Intent(MainActivity.this, Menu.class);
                             startActivity(intent);
@@ -149,6 +158,37 @@ public class MainActivity extends AppCompatActivity {
                 // Google Sign In failed, update UI appropriately
             }
         }
+    }
+
+    public void addUserToDataBase(){
+        FirebaseDatabase root = FirebaseDatabase.getInstance();
+        DatabaseReference db_reference_usuarios = root.getReference("usuarios");
+        db_reference_usuarios.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if(!snapshot.hasChild(mAuth.getUid())){
+                    HashMap<String,String> datos_usuario = new HashMap<>();
+                    FirebaseUser user = mAuth.getCurrentUser();
+
+                    datos_usuario.put("nombre",user.getDisplayName());
+                    datos_usuario.put("correo",user.getEmail());
+                    datos_usuario.put("tipo","");//Prioridad comun por defecto?
+
+
+                    db_reference_usuarios.child(mAuth.getUid()).setValue(datos_usuario);
+                    System.out.println("Usuario agregado a la BD");
+                }
+                else{
+                    System.out.println("El usuario ya existe en la BD");
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError error) {
+
+            }
+        });
+
+
     }
 
 }
