@@ -89,7 +89,7 @@ public class Menu extends AppCompatActivity {
                 finish();
             }
         });
-        notificacion();
+        //notificacion();
         listUser = new ArrayList<>();
         getTipoDB();
 
