@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                                         agregarUsuarioBD(mAuth.getUid());
                                         System.out.println("-----------Usuario SIN prioridad agregado a la BD");
 
-                                        //Redireccionar al menu
+                                        //Redireccion a pagina de espera de asignacion
                                         Intent intent= new Intent(MainActivity.this, esperaAsignacion.class);
                                         startActivity(intent);
                                     }

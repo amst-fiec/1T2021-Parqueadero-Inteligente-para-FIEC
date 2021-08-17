@@ -153,6 +153,13 @@ public class Menu extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 tipo = snapshot.child("tipo").getValue(String.class);
+
+                if(tipo.equals("")){
+                    //Redireccion a pagina de espera de asignacion
+                    Intent intent= new Intent(Menu.this, esperaAsignacion.class);
+                    startActivity(intent);
+                }
+
                 mostrarParkeo(tipo);
                 Log.d("myTag", "This is my message " + tipo);
                 adapter.notifyDataSetChanged();
