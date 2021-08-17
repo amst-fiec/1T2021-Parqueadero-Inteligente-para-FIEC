@@ -6,12 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".Menu">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp">
+
 
         <TextView
             android:id="@+id/textViewBienvenido"
@@ -26,137 +28,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-
-        <TextView
-            android:id="@+id/textViewPrioridad"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
+            android:textColor="#13B9BF"
+            android:textSize="34sp"
+            android:textAllCaps="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#21ECF3"
-            android:orientation="horizontal">
+            android:layout_height="309dp">
 
-            <LinearLayout
-                android:id="@+id/layoutEstac1"
-                android:layout_width="212dp"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tituloParqueo1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="5dp"
-                    android:background="#18FFFF"
-                    android:gravity="center_horizontal"
-                    android:text="PARQUEO # 1" />
-
-                <TextView
-                    android:id="@+id/parqueo1"
-                    android:layout_width="210dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="15dp"
-                    android:background="#E040FB"
-                    android:gravity="center"
-                    android:text="RESTRINGIDO" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layoutEstac2"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_row="0"
+                android:layout_column="0" />
 
-                <TextView
-                    android:id="@+id/tituloParqueo2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="5dp"
-                    android:background="#18FFFF"
-                    android:gravity="center_horizontal"
-                    android:text="PARQUEO # 2" />
 
-                <TextView
-                    android:id="@+id/parqueo2"
-                    android:layout_width="198dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="15dp"
-                    android:background="#E040FB"
-                    android:gravity="center_horizontal"
-                    android:text="RESTRINGIDO" />
-            </LinearLayout>
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#21ECF3"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:id="@+id/layoutEstac3"
-                android:layout_width="212dp"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tituloParqueo3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="5dp"
-                    android:background="#18FFFF"
-                    android:gravity="center_horizontal"
-                    android:text="PARQUEO # 3" />
-
-                <TextView
-                    android:id="@+id/parqueo3"
-                    android:layout_width="212dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="15dp"
-                    android:background="#E040FB"
-                    android:gravity="center"
-                    android:text="RESTRINGIDO" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layoutEstac4"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tituloParqueo4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="5dp"
-                    android:background="#0FFFFF"
-                    android:gravity="center_horizontal"
-                    android:text="PARQUEO # 4" />
-
-                <TextView
-                    android:id="@+id/parqueo4"
-                    android:layout_width="198dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="15dp"
-                    android:background="#E040FB"
-                    android:gravity="center_horizontal"
-                    android:text="RESTRINGIDO" />
-            </LinearLayout>
-        </LinearLayout>
-
         <Button
             android:id="@+id/btnMapa"
             android:layout_width="match_parent"

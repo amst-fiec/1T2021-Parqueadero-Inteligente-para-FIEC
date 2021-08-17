@@ -30,11 +30,16 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 
+import static java.lang.Thread.sleep;
+
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
+    private String uid;
 
     private GoogleSignInClient mGoogleSignInClient;
+    FirebaseDatabase root = FirebaseDatabase.getInstance();
+    DatabaseReference db_reference_usuarios = root.getReference("usuarios");
 
     private EditText txt_email,txt_pass;
     private Button btn_iniciar_sesion, btn_iniciar_sesion_Google;
@@ -121,11 +126,40 @@ public class MainActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            //System.out.println("-------------" + mAuth.getUid());
-                            addUserToDataBase();
-                            //To Menu Activity
-                            Intent intent= new Intent(MainActivity.this, Menu.class);
-                            startActivity(intent);
+
+                            //Verificar si el usuario ya existe en la BD
+                            db_reference_usuarios.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot snapshot) {
+                                    if(!snapshot.hasChild(mAuth.getUid())) {
+                                        agregarUsuarioBD(mAuth.getUid());
+                                        System.out.println("-----------Usuario SIN prioridad agregado a la BD");
+
+                                        //Redireccion a pagina de espera de asignacion
+                                        Intent intent= new Intent(MainActivity.this, esperaAsignacion.class);
+                                        startActivity(intent);
+                                    }
+                                    else {
+                                        //Si existe y no tiene prioridad asignada se envia a la pagina
+                                        String tipo = snapshot.child(mAuth.getUid()).child("tipo").getValue(String.class);
+                                        if(tipo.equals("")){
+                                            //Redireccion a pagina de espera de asignacion
+                                            Intent intent= new Intent(MainActivity.this, esperaAsignacion.class);
+                                            startActivity(intent);
+                                        }else{
+                                            //Redireccionar al menu
+                                            Intent intent = new Intent(MainActivity.this, Menu.class);
+                                            startActivity(intent);
+                                        }
+
+                                    }
+                                }
+                                @Override
+                                public void onCancelled(DatabaseError error) {
+
+                                }
+                            });
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(MainActivity.this, "Usuario o contraseña incorrecta.",
@@ -139,7 +173,10 @@ public class MainActivity extends AppCompatActivity {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
-
+    public void registrarse(View v) {
+        Intent registro = new Intent(this, Registrarse.class);
+        startActivity(registro);
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -158,34 +195,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void addUserToDataBase(){
-        FirebaseDatabase root = FirebaseDatabase.getInstance();
-        DatabaseReference db_reference_usuarios = root.getReference("usuarios");
-        db_reference_usuarios.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                if(!snapshot.hasChild(mAuth.getUid())){
-                    HashMap<String,String> datos_usuario = new HashMap<>();
-                    FirebaseUser user = mAuth.getCurrentUser();
-
-                    datos_usuario.put("nombre",user.getDisplayName());
-                    datos_usuario.put("correo",user.getEmail());
-                    datos_usuario.put("tipo","");//Prioridad comun por defecto?
 
 
-                    db_reference_usuarios.child(mAuth.getUid()).setValue(datos_usuario);
-                    System.out.println("Usuario agregado a la BD");
-                }
-                else{
-                    System.out.println("El usuario ya existe en la BD");
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError error) {
+    }
 
-            }
-        });
+    public void agregarUsuarioBD(String uid){
+        HashMap<String,String> datos_usuario = new HashMap<>();
+        FirebaseUser user = mAuth.getCurrentUser();
 
+        datos_usuario.put("nombre",user.getDisplayName());
+        datos_usuario.put("correo",user.getEmail());
+        datos_usuario.put("tipo","");
 
+        db_reference_usuarios.child(uid).setValue(datos_usuario);
     }
 
 }

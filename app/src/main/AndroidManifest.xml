@@ -15,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ParqueosInteligentes">
-        <activity android:name=".SinAsignar"></activity>
+        <activity android:name=".esperaAsignacion"></activity>
+        <activity android:name=".Registrarse" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -29,7 +30,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".Parqueadero"
+            android:name=".ParqueaderoMap"
             android:label="@string/title_activity_parqueadero" />
         <activity android:name=".Menu" />
         <activity android:name=".splashScreem">
@@ -39,7 +40,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>
