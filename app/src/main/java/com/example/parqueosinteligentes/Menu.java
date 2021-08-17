@@ -66,7 +66,7 @@ public class Menu extends AppCompatActivity {
 
         InitializateComponents();
         //-------------------
-        //notificacion();
+        //notificacionTipoUsuario();
         getTipoDB();
 
         //-------------------
@@ -114,40 +114,12 @@ public class Menu extends AppCompatActivity {
 
     }
 
-    public void notificacion() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                db_reference.child(usuario).child("tipo").addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot snapshot) {
-                        while (tipo.isEmpty()) {
-                            tipo = snapshot.getValue(String.class);
-                            if (tipo == null) {//TODO:Se debe implementar registrar los datos en la base, por ahora solo estan quemados
-                                tipo = "privilegiado";//Si un usuario que no esta quemado inicia sesion, se le setea el tipo "privilegiado"
-                            }
-                        }
-                        Menu.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(getApplicationContext(), "Usuario tipo:" + tipo, Toast.LENGTH_SHORT).show();
-                            }
-                        });
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError error) {
-                    }
-                });
-
-            }
-        }).start();
-
+    public void notificacionTipoUsuario(String tipo) {
+        Toast.makeText(getApplicationContext(), "Usuario tipo:" + tipo, Toast.LENGTH_SHORT).show();
     }
 
     public void getTipoDB() {
-        Query query = db_reference.child(uid);//Deberia acceder a lo mismo pero ahora usando uid
+        Query query = db_reference.child(uid);
         ValueEventListener myTag = query.addValueEventListener(new ValueEventListener() {
 
             @Override
@@ -158,11 +130,15 @@ public class Menu extends AppCompatActivity {
                     //Redireccion a pagina de espera de asignacion
                     Intent intent= new Intent(Menu.this, esperaAsignacion.class);
                     startActivity(intent);
+                    finish();
+                }
+                else{
+                    notificacionTipoUsuario(tipo);//Solo cuando obtiene prioridad asignada se presenta la notificacion
+                    mostrarParkeo(tipo);
+                    Log.d("myTag", "This is my message " + tipo);
+                    adapter.notifyDataSetChanged();
                 }
 
-                mostrarParkeo(tipo);
-                Log.d("myTag", "This is my message " + tipo);
-                adapter.notifyDataSetChanged();
             }
 
 
@@ -176,7 +152,7 @@ public class Menu extends AppCompatActivity {
 
     public void mostrarParkeo(String tipo) {
         Query query = null;
-        if (tipo.equals("comun") || tipo.equals("")) {
+        if (tipo.equals("comun")) {
             query = db_referenceP.orderByChild("tipo").equalTo(tipo);
         } else {
             query = db_referenceP;
@@ -208,6 +184,38 @@ public class Menu extends AppCompatActivity {
 
     public static String getTipo() {
         return tipo;
+    }
+
+    public void notificacion() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                db_reference.child(usuario).child("tipo").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        while (tipo.isEmpty()) {
+                            tipo = snapshot.getValue(String.class);
+                            if (tipo == null) {//TODO:Se debe implementar registrar los datos en la base, por ahora solo estan quemados
+                                tipo = "privilegiado";//Si un usuario que no esta quemado inicia sesion, se le setea el tipo "privilegiado"
+                            }
+                        }
+                        Menu.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(), "Usuario tipo:" + tipo, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+                    }
+                });
+
+            }
+        }).start();
+
     }
 
 }
