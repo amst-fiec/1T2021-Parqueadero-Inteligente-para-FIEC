@@ -1,5 +1,6 @@
 package com.example.parqueosinteligentes;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,45 +13,57 @@ import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 
+import java.util.ArrayList;
 
 
-public class myAdapter extends FirebaseRecyclerAdapter<Parqueo,myAdapter.myviewholder>
+public class myAdapter extends RecyclerView.Adapter<myAdapter.MyViewHolder>
 {
-    public myAdapter(@NonNull FirebaseRecyclerOptions<Parqueo> options) {
-        super(options);
-    }
+    Context context;
+    ArrayList<Parqueo> listparqueo;
 
-    @Override
-    protected void onBindViewHolder(@NonNull myviewholder holder, int position, @NonNull Parqueo parqueo)
-    {  String valueEstado="Libre";
-        if(parqueo.getEstado()==1){
-            valueEstado="Ocupado";
-        }
-       holder.estado.setText(valueEstado);
-       holder.idParkeo.setText("#"+String.valueOf(parqueo.getIdParkeo()));
-       holder.tipo.setText(String.valueOf(parqueo.getTipo()));
-
+    public myAdapter(Context context, ArrayList<Parqueo> listparqueo) {
+        this.context = context;
+        this.listparqueo = listparqueo;
     }
 
     @NonNull
     @Override
-    public myviewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
-    {
-       View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.singlerow,parent,false);
-       return new myviewholder(view);
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.singlerow,parent,false);
+        return new MyViewHolder(view);
     }
 
-    class myviewholder extends RecyclerView.ViewHolder
-    {
+    @Override
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        Parqueo parqueo = listparqueo.get(position);
+        String valueEstado="Libre";
+        if(parqueo.getEstado()==1){
+            valueEstado="Ocupado";
+        }
 
+        holder.estado.setText(valueEstado);
+        holder.idParkeo.setText("#" + String.valueOf(parqueo.getIdParkeo()));
+        holder.tipo.setText(String.valueOf(parqueo.getTipo()));
+
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return listparqueo.size();
+    }
+
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView estado,idParkeo,tipo;
-        public myviewholder(@NonNull View itemView)
-        {
-            super(itemView);
 
+        public MyViewHolder(@NonNull View itemView) {
+            super(itemView);
             estado=(TextView)itemView.findViewById(R.id.estadotext);
             idParkeo=(TextView)itemView.findViewById(R.id.idParkeotext);
             tipo=(TextView)itemView.findViewById(R.id.tipotext);
+
+
         }
     }
+
 }
