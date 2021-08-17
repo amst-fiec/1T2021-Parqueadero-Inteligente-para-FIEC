@@ -31,6 +31,7 @@ public class esperaAsignacion extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(esperaAsignacion.this,MainActivity.class));
+                finish();
             }
         });
     }
