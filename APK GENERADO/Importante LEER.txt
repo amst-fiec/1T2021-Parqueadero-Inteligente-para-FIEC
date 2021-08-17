@@ -1,6 +1,10 @@
 Datos de prueba de autenticacion de correo:
 
-correo:prueba@prueba.com
+correo:comun@prueba.com
 contraseña:prueba
 
-Puede iniciar sesion con una cuenta de Google usando el boton respectivo.
+correo:privilegiado@prueba.com
+contraseña:prueba
+
+Puede iniciar sesion con una cuenta de Google usando el boton respectivo, pero se debe asignar una prioridad desde la consola
+de Firebase para acceder a la pantalla principal.
