@@ -31,56 +31,59 @@ public class Menu extends AppCompatActivity {
     private static String tipo;
 
     private TextView textViewNombre;
+    private Button btnMapa,cerrarSesion;
+
     private FirebaseAuth mAuth;
 
-    public static void setTipo(String tipo) {
-        Menu.tipo = tipo;
-    }
+    private DatabaseReference db_reference;
+    private DatabaseReference db_referenceP;
 
-    public static String getTipo() {
-        return tipo;
-    }
+    private FirebaseUser user;
+    private FirebaseDatabase root;
 
-
-    private Button btnMapa;
-    private Button cerrarSesion;
-    DatabaseReference db_reference;
-    DatabaseReference db_referenceP;
-    FirebaseUser user;
-    FirebaseDatabase root;
     //Variables usadas en la rama
     private String uid;
-    private String correo;
-    private String nombre;
-
     private String email;
     private String usuario;
 
-    RecyclerView recview;
-    myAdapter adapter;
-    ArrayList<Parqueo> list;
-    ArrayList<Usuario> listUser;
+    private RecyclerView recview;
+    private myAdapter adapter;
+
+    private ArrayList<Parqueo> list;
+    private ArrayList<Usuario> listUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-        // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-        uid = mAuth.getUid();//Variable usada en rama erick
-
-        root = FirebaseDatabase.getInstance();
         user = mAuth.getCurrentUser();
 
-        email = user.getEmail();
-        usuario = email.split("@")[0];
-        iniciarBaseDeDatosUsuarios();
+        root = FirebaseDatabase.getInstance();
+        db_reference = root.getReference("usuarios");
+        db_referenceP = root.getReference("Parkeo");
+
         InitializateComponents();
+        //-------------------
+        //notificacion();
+        getTipoDB();
 
+        //-------------------
+        //recview.setLayoutManager(new LinearLayoutManager(this));--NO
+
+    }
+
+    private void InitializateComponents() {
+        //----Variables
+        uid = mAuth.getUid();
+        email = user.getEmail();
+        usuario = user.getDisplayName();//email.split("@")[0];
+
+        textViewNombre = (TextView) findViewById(R.id.textViewNombre);
         textViewNombre.setText(usuario);
-        cerrarSesion = (Button) findViewById(R.id.btnCerrarSesion);
 
+        cerrarSesion = (Button) findViewById(R.id.btnCerrarSesion);
         cerrarSesion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,48 +92,26 @@ public class Menu extends AppCompatActivity {
                 finish();
             }
         });
-        //notificacion();
+
+        btnMapa = (Button) findViewById(R.id.btnMapa);
+        btnMapa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Menu.this,ParqueaderoMap.class));
+            }
+        });
+
         listUser = new ArrayList<>();
-        getTipoDB();
+        list = new ArrayList<>();
 
-        // listTipo = new ArrayList<>();
-
+        adapter = new myAdapter(this, list);
 
         recview = (RecyclerView) findViewById(R.id.recview);
-        //recview.setLayoutManager(new LinearLayoutManager(this));
-        iniciarBaseDeDatosParqueo();
         recview.setHasFixedSize(true);
         recview.setLayoutManager(new LinearLayoutManager(this));
-        list = new ArrayList<>();
-        adapter = new myAdapter(this, list);
+
         recview.setAdapter(adapter);
 
-//        Log.d("myTag", "This is my message2 " + listUser.size());
-
-        //tipo= (String)listTipo.get(0);
-        //   Log.d("myTag", "This is my message2 " + listTipo.get(0));
-        //   tipo= (String) listTipo.get(0);
-        // tipo= getTipo();
-        //  Log.d("myTag", "This is my message2 " + Menu.getTipo());
-
-
-    }
-
-    private void InitializateComponents() {
-        textViewNombre = (TextView) findViewById(R.id.textViewNombre);
-    }
-
-    public void revisarMapa(View v) {
-        Intent mapa = new Intent(this, ParqueaderoMap.class);
-        startActivity(mapa);
-    }
-
-    public void iniciarBaseDeDatosUsuarios() {
-        db_reference = root.getReference("usuarios");
-    }
-
-    public void iniciarBaseDeDatosParqueo() {
-        db_referenceP = root.getReference("Parkeo");
     }
 
     public void notificacion() {
@@ -166,24 +147,14 @@ public class Menu extends AppCompatActivity {
     }
 
     public void getTipoDB() {
-/*
-
-Estructura de diagrama en Realtime Database
-db_reference->usuarios->uid->{correo,nombre,tipo}
-
-*/
-        //Query query = db_reference.orderByChild("correo").equalTo(email);
         Query query = db_reference.child(uid);//Deberia acceder a lo mismo pero ahora usando uid
         ValueEventListener myTag = query.addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
                 tipo = snapshot.child("tipo").getValue(String.class);
                 mostrarParkeo(tipo);
                 Log.d("myTag", "This is my message " + tipo);
-
-
                 adapter.notifyDataSetChanged();
             }
 
@@ -221,6 +192,15 @@ db_reference->usuarios->uid->{correo,nombre,tipo}
             }
         });
 
+    }
+
+
+    public static void setTipo(String tipo) {
+        Menu.tipo = tipo;
+    }
+
+    public static String getTipo() {
+        return tipo;
     }
 
 }

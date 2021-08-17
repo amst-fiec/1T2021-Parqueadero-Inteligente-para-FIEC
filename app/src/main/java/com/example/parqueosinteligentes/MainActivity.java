@@ -132,14 +132,18 @@ public class MainActivity extends AppCompatActivity {
                                 @Override
                                 public void onDataChange(DataSnapshot snapshot) {
                                     if(!snapshot.hasChild(mAuth.getUid())) {
-                                        agregarUsuarioBD();
-                                        System.out.println("-----------Usuario agregado a la BD");
-                                        //Redireccionar a pantalla de espera de asignación
+                                        agregarUsuarioBD(mAuth.getUid());
+                                        System.out.println("-----------Usuario SIN prioridad agregado a la BD");
 
+                                        //Redireccionar al menu
+                                        Intent intent= new Intent(MainActivity.this, esperaAsignacion.class);
+                                        startActivity(intent);
                                     }
-                                    //Redireccionar al menu
-                                    Intent intent= new Intent(MainActivity.this, Menu.class);
-                                    startActivity(intent);
+                                    else {
+                                        //Redireccionar al menu
+                                        Intent intent = new Intent(MainActivity.this, Menu.class);
+                                        startActivity(intent);
+                                    }
                                 }
                                 @Override
                                 public void onCancelled(DatabaseError error) {
@@ -186,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void agregarUsuarioBD(){
+    public void agregarUsuarioBD(String uid){
         HashMap<String,String> datos_usuario = new HashMap<>();
         FirebaseUser user = mAuth.getCurrentUser();
 
@@ -194,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
         datos_usuario.put("correo",user.getEmail());
         datos_usuario.put("tipo","");
 
-        db_reference_usuarios.child(mAuth.getUid()).setValue(datos_usuario);
+        db_reference_usuarios.child(uid).setValue(datos_usuario);
     }
 
 }
