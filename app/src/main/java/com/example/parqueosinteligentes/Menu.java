@@ -7,8 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,7 +22,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.TimeZone;
 
 public class Menu extends AppCompatActivity {
 
@@ -67,6 +68,7 @@ public class Menu extends AppCompatActivity {
         InitializateComponents();
         //-------------------
         //notificacionTipoUsuario();
+        verificaHorarioPrioridad();
         getTipoDB();
 
         //-------------------
@@ -217,8 +219,10 @@ public class Menu extends AppCompatActivity {
         }).start();
 
     }
-        /*
-    private void actualizarPrioridadHorario(){
+
+    private void verificaHorarioPrioridad(){
+        String[] ArrayIDEstacionamiento = {"P1","P2","P3","P4"};
+
         TimeZone myTimeZone = TimeZone.getTimeZone("America/Guayaquil");
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
         simpleDateFormat.setTimeZone(myTimeZone);
@@ -227,8 +231,14 @@ public class Menu extends AppCompatActivity {
         int hora=Integer.parseInt(dateTime.split(":")[0]);
         int minuto=Integer.parseInt(dateTime.split(":")[1]);
 
+        System.out.println("---------------");
+        System.out.println(dateTime);
+
         //Esta funcion hace que a partir de las 12, todos los estacionamientos cambien su prioridad a COMUN
         if(hora>=12&&hora<20&&minuto>=0){
+            System.out.println("----------------------------------");
+            System.out.println("Todos los parqueaderos disponibles");
+            System.out.println("----------------------------------");
 
             for(int i = 0; i< ArrayIDEstacionamiento.length; i++) {
                 String estacionamiento = ArrayIDEstacionamiento[i];
@@ -236,16 +246,23 @@ public class Menu extends AppCompatActivity {
                 DatabaseReference db_reference_estacionamiento = root.getReference("Parkeo").child(estacionamiento).child("tipo");
                 db_reference_estacionamiento.setValue("comun");
             }
+
         }else if(hora<12||hora>=20&&minuto>=0){
-            for(int i = 0; i<2; i++) {
+            System.out.println("-------------------------------------------");
+            System.out.println("Solo parqueaderos no reservados disponibles");
+            System.out.println("-------------------------------------------");
+
+            for(int i = 0; i<2; i++) {//TODO:Definir que parqueaderos tienen son privilegiados
                 String estacionamiento = ArrayIDEstacionamiento[i];
 
                 DatabaseReference db_reference_estacionamiento = root.getReference("Parkeo").child(estacionamiento).child("tipo");
                 db_reference_estacionamiento.setValue("privilegiado");
             }
+
+
         }
 
     }
-    */
+
 
 }
