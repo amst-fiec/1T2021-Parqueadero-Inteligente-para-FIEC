@@ -46,13 +46,6 @@
 
 
         </LinearLayout>
-        <Button
-            android:id="@+id/btnMapa"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:onClick="revisarMapa"
-            android:text="Ver Mapa" />
 
         <Button
             android:id="@+id/btnCerrarSesion"

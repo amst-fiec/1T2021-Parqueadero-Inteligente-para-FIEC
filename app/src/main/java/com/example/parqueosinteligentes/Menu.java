@@ -95,13 +95,13 @@ public class Menu extends AppCompatActivity {
             }
         });
 
-        btnMapa = (Button) findViewById(R.id.btnMapa);
-        btnMapa.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(Menu.this,ParqueaderoMap.class));
-            }
-        });
+     //   btnMapa = (Button) findViewById(R.id.btnMapa);
+   //     btnMapa.setOnClickListener(new View.OnClickListener() {
+   //         @Override
+  //          public void onClick(View view) {
+    //            startActivity(new Intent(Menu.this,ParqueaderoMap.class));
+    //        }
+    //    });
 
         listUser = new ArrayList<>();
         list = new ArrayList<>();
@@ -232,7 +232,7 @@ public class Menu extends AppCompatActivity {
         int minuto=Integer.parseInt(dateTime.split(":")[1]);
 
         System.out.println("---------------");
-        System.out.println(dateTime);
+        System.out.println("Esta es la hora "+dateTime);
 
         //Esta funcion hace que a partir de las 12, todos los estacionamientos cambien su prioridad a COMUN
         if(hora>=12&&hora<20&&minuto>=0){
