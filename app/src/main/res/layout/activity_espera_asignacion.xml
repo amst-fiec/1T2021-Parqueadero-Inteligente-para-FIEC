@@ -9,6 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:orientation="vertical">
 
         <TextView
@@ -22,10 +23,10 @@
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="match_parent"
-            android:layout_height="310dp"
+            android:layout_width="274dp"
+            android:layout_height="195dp"
             android:layout_weight="0.25"
-            app:srcCompat="@drawable/icon2" />
+            app:srcCompat="@drawable/logo2" />
 
         <TextView
             android:id="@+id/textView2"

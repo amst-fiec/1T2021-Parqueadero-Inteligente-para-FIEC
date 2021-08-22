@@ -48,8 +48,8 @@ public class ParqueaderoMap extends FragmentActivity implements   GoogleMap.OnMa
     private Marker markerP4;
     private Marker markerP;
     private int mMapTypes[] = {
-            GoogleMap.MAP_TYPE_SATELLITE,
             GoogleMap.MAP_TYPE_NORMAL,
+            GoogleMap.MAP_TYPE_SATELLITE,
             GoogleMap.MAP_TYPE_HYBRID,
             GoogleMap.MAP_TYPE_TERRAIN
     };
@@ -84,7 +84,7 @@ public class ParqueaderoMap extends FragmentActivity implements   GoogleMap.OnMa
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         //Tipo de Mapa
-        mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         //Limite de Zoom
         mMap.setMinZoomPreference(15.0f);
         mMap.setMaxZoomPreference(30.0f);
@@ -209,7 +209,8 @@ public class ParqueaderoMap extends FragmentActivity implements   GoogleMap.OnMa
     }
 
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        mMap.setMapType(mMapTypes[position]);
+        if(position!=0){
+        mMap.setMapType(mMapTypes[position]);}
 
     }
 

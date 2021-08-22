@@ -2,8 +2,8 @@
     <string name="app_name">ParqueosInteligentes</string>
     <string name="title_activity_parqueadero">Map</string>
     <string-array name="map_types_list">
-        <item>Satellite</item>
         <item>Normal</item>
+        <item>Satellite</item>
         <item>Hybrid</item>
         <item>Terrain</item>
     </string-array>
