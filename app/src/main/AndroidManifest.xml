@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ParqueosInteligentes">
         <activity android:name="com.parkquick.parqueosinteligentes.esperaAsignacion"></activity>
-        <activity android:name="com.parkquick.parqueosinteligentes.Registrarse" />
+        <activity android:name="com.parkquick.parqueosinteligentes.Activities.Registrarse" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").

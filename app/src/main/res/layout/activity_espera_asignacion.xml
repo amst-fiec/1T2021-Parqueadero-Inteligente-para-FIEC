@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="310dp"
             android:layout_weight="0.25"
-            app:srcCompat="@drawable/icon2" />
+            app:srcCompat="@drawable/logo2" />
 
         <TextView
             android:id="@+id/textView2"

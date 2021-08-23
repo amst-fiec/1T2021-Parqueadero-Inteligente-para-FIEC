@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 28
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.example.parqueosinteligentes"
+        applicationId "com.parkquick.parqueosinteligentes"
         minSdkVersion 16
         targetSdkVersion 30
         versionCode 1

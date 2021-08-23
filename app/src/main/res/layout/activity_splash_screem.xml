@@ -11,20 +11,24 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:context=".MainActivity">
+
         <ImageView
             android:id="@+id/iconP"
-            android:layout_width="135dp"
-            android:layout_height="122dp"
+            android:layout_width="426dp"
+            android:layout_height="194dp"
             android:layout_gravity="center"
             android:layout_marginTop="200px"
             app:srcCompat="@drawable/logo1" />
 
         <pl.droidsonroids.gif.GifImageView
             android:id="@+id/loading"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="400px"
+            android:layout_marginTop="200dp"
+            android:layout_marginLeft="130dp"
+            android:layout_marginRight="130dp"
+            android:layout_marginBottom="120dp"
             android:src="@drawable/load" />
 
 
