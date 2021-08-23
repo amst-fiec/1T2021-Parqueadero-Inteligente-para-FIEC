@@ -1,23 +1,24 @@
 {
   "project_info": {
     "project_number": "155596677277",
+    "firebase_url": "https://parking-smart---asmt-default-rtdb.firebaseio.com",
     "project_id": "parking-smart---asmt",
     "storage_bucket": "parking-smart---asmt.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:155596677277:android:d64313a8701390e5457474",
+        "mobilesdk_app_id": "1:155596677277:android:30e09ea695fca270457474",
         "android_client_info": {
-          "package_name": "com.example.parqueosinteligentes"
+          "package_name": "com.parkquick.parqueosinteligentes"
         }
       },
       "oauth_client": [
         {
-          "client_id": "155596677277-3n93spug2sd9gug44lbbaqlj0pbfbq1s.apps.googleusercontent.com",
+          "client_id": "155596677277-hovs0i5fv7kgvqbi945ptb8btb199888.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.parqueosinteligentes",
+            "package_name": "com.parkquick.parqueosinteligentes",
             "certificate_hash": "e203d1cd680f6633956433255542450987146ea8"
           }
         },
