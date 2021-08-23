@@ -15,8 +15,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ParqueosInteligentes">
-        <activity android:name="com.parkquick.parqueosinteligentes.esperaAsignacion"></activity>
-        <activity android:name="com.parkquick.parqueosinteligentes.Registrarse" />
+
+        <activity android:name="com.parkquick.parqueosinteligentes.Activities.EsperaAsignacion"></activity>
+        <activity android:name="com.parkquick.parqueosinteligentes.Activities.Registrarse"
+             android:theme="@style/Theme.ParqueosInteligentes"/>
+
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -30,17 +33,21 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name="com.parkquick.parqueosinteligentes.ParqueaderoMap"
+
+            android:name="com.parkquick.parqueosinteligentes.Activities.ParqueaderoMap"
             android:label="@string/title_activity_parqueadero" />
-        <activity android:name="com.parkquick.parqueosinteligentes.Menu" />
-        <activity android:name="com.parkquick.parqueosinteligentes.splashScreem">
+        <activity android:name="com.parkquick.parqueosinteligentes.Activities.Menu" />
+        <activity android:name="com.parkquick.parqueosinteligentes.Activities.SplashScreem">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.parkquick.parqueosinteligentes.MainActivity" />
+
+        <activity android:name="com.parkquick.parqueosinteligentes.Activities.MainActivity" />
+
     </application>
 
 </manifest>

@@ -4,14 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+
+    tools:context=".Activities.MainActivity">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".MainActivity">
+
+        tools:context=".Activities.MainActivity">
+
 
         <ImageView
             android:id="@+id/imageView"
@@ -31,7 +34,16 @@
             android:textColor="#13B9BF"
             android:textSize="34sp" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="30dp">
         <EditText
+            android:background="@drawable/reg_edittext_style"
+
             android:id="@+id/editTextUsuario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -40,6 +52,9 @@
             android:inputType="textEmailAddress" />
 
         <EditText
+
+            android:background="@drawable/reg_edittext_style"
+
             android:id="@+id/editTextPass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -47,14 +62,26 @@
             android:hint="Contraseña"
             android:inputType="textPassword" />
 
+        </LinearLayout>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginLeft="30dp"
+    android:layout_marginRight="30dp"
+    android:layout_marginBottom="30dp">
+
+    <Button
+
+        android:id="@+id/btnLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/reg_btn_style"
+        android:text="Iniciar Sesión"
+        android:textColor="#1A1A71" />
+
         <Button
-            android:id="@+id/btnLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#5DCFDF"
-            android:text="Iniciar Sesión"
-            android:textColor="#1A1A71" />
-        <Button
+
             android:id="@+id/btnLoginGoogle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -65,14 +92,20 @@
             android:textColor="#1A1A71" />
 
         <Button
+
+            android:background="@drawable/reg_btn2_style"
             android:id="@+id/btnSignUp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#7B30C5"
+
+
             android:text="Registrarse"
             android:textColor="#F3EDED"
             android:layout_marginTop="50px"
             android:onClick="registrarse"/>
+
+</LinearLayout>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
