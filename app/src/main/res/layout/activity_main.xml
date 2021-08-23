@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context=".Activities.MainActivity">
 
 
@@ -11,7 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+
         tools:context=".Activities.MainActivity">
+
 
         <ImageView
             android:id="@+id/imageView"
@@ -30,6 +33,7 @@
             android:text="Bienvenido"
             android:textColor="#13B9BF"
             android:textSize="34sp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -39,6 +43,7 @@
             android:layout_marginBottom="30dp">
         <EditText
             android:background="@drawable/reg_edittext_style"
+
             android:id="@+id/editTextUsuario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -47,13 +52,16 @@
             android:inputType="textEmailAddress" />
 
         <EditText
+
             android:background="@drawable/reg_edittext_style"
+
             android:id="@+id/editTextPass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Contraseña"
             android:inputType="textPassword" />
+
         </LinearLayout>
 <LinearLayout
     android:layout_width="match_parent"
@@ -73,6 +81,7 @@
         android:textColor="#1A1A71" />
 
         <Button
+
             android:id="@+id/btnLoginGoogle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -83,16 +92,20 @@
             android:textColor="#1A1A71" />
 
         <Button
+
             android:background="@drawable/reg_btn2_style"
             android:id="@+id/btnSignUp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
+
             android:text="Registrarse"
             android:textColor="#F3EDED"
             android:layout_marginTop="50px"
             android:onClick="registrarse"/>
+
 </LinearLayout>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

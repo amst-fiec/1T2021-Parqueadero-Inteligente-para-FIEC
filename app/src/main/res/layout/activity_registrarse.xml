@@ -4,13 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context=".Activities.Registrarse">
+
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+
         tools:context=".Activities.MainActivity"
         tools:layout_editor_absoluteX="58dp"
         tools:layout_editor_absoluteY="-16dp">
@@ -23,6 +26,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="200px"
             android:layout_marginBottom="200px"
+
             app:srcCompat="@drawable/logo2" />
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,6 +38,7 @@
 
         <EditText
             android:background="@drawable/reg_edittext_style"
+
             android:id="@+id/editTextCorreo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -43,16 +48,20 @@
 
 
         <EditText
+
             android:background="@drawable/reg_edittext_style"
             android:id="@+id/editTextPass"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Contraseña"
             android:inputType="textPassword" />
 
+
         <EditText
             android:background="@drawable/reg_edittext_style"
+
             android:id="@+id/editTextCodigoT"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -61,6 +70,7 @@
             android:inputType="text" />
 
         <Button
+
             android:id="@+id/btnRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -69,5 +79,6 @@
             android:text="Register Now!"
             android:textColor="#F3EDED" />
         </LinearLayout>
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
