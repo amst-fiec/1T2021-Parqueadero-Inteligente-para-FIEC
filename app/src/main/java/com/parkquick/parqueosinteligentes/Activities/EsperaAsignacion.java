@@ -1,4 +1,4 @@
-package com.parkquick.parqueosinteligentes;
+package com.parkquick.parqueosinteligentes.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,8 +8,9 @@ import android.view.View;
 import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.parkquick.parqueosinteligentes.R;
 
-public class esperaAsignacion extends AppCompatActivity {
+public class EsperaAsignacion extends AppCompatActivity {
 
 
     private FirebaseAuth mAuth;
@@ -30,7 +31,7 @@ public class esperaAsignacion extends AppCompatActivity {
         btnInicio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(esperaAsignacion.this,MainActivity.class));
+                startActivity(new Intent(EsperaAsignacion.this, MainActivity.class));
                 finish();
             }
         });

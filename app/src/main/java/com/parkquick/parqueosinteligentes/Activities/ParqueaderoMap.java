@@ -1,4 +1,4 @@
-package com.parkquick.parqueosinteligentes;
+package com.parkquick.parqueosinteligentes.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -24,6 +24,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.parkquick.parqueosinteligentes.R;
 import com.parkquick.parqueosinteligentes.databinding.ActivityParqueaderoBinding;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;

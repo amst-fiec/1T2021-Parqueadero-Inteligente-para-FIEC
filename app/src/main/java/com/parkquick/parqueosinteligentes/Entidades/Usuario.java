@@ -1,4 +1,4 @@
-package com.parkquick.parqueosinteligentes;
+package com.parkquick.parqueosinteligentes.Entidades;
 
 public class Usuario {
     String correo, nombre, tipo, password;

@@ -1,4 +1,4 @@
-package com.parkquick.parqueosinteligentes;
+package com.parkquick.parqueosinteligentes.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +21,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.parkquick.parqueosinteligentes.Entidades.Parqueo;
+import com.parkquick.parqueosinteligentes.R;
+import com.parkquick.parqueosinteligentes.Entidades.Usuario;
+import com.parkquick.parqueosinteligentes.Adapters.myAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -99,7 +103,7 @@ public class Menu extends AppCompatActivity {
         btnMapa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(Menu.this,ParqueaderoMap.class));
+                startActivity(new Intent(Menu.this, ParqueaderoMap.class));
             }
         });
 
@@ -130,7 +134,7 @@ public class Menu extends AppCompatActivity {
 
                 if(tipo.equals("")){
                     //Redireccion a pagina de espera de asignacion
-                    Intent intent= new Intent(Menu.this, esperaAsignacion.class);
+                    Intent intent= new Intent(Menu.this, EsperaAsignacion.class);
                     startActivity(intent);
                     finish();
                 }

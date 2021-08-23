@@ -22,10 +22,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.parkquick.parqueosinteligentes.MainActivity;
-import com.parkquick.parqueosinteligentes.Parqueo;
 import com.parkquick.parqueosinteligentes.R;
-import com.parkquick.parqueosinteligentes.Usuario;
+import com.parkquick.parqueosinteligentes.Entidades.Usuario;
 
 import java.util.ArrayList;
 
@@ -37,7 +35,8 @@ public class Registrarse extends AppCompatActivity {
     private DatabaseReference mDatabaseP;
     private static final String USERS = "usuarios";
     private String TAG = "Reistrarse";
-    private String nombre,  email, pass, numTargeta;
+    private String nombre, email, pass , num;
+    private Integer numTargeta;
     private ArrayList<String> listT;
     private Usuario user;
     private FirebaseAuth mAuth;
@@ -47,67 +46,83 @@ public class Registrarse extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registrarse);
         editTextCorreo = findViewById(R.id.editTextCorreo);
-       editTextPass = findViewById(R.id.editTextPass);
-      editTextCodigoT= findViewById(R.id.editTextCodigoT);
+        editTextPass = findViewById(R.id.editTextPass);
+        editTextCodigoT = findViewById(R.id.editTextCodigoT);
 
-       btnRegister = findViewById(R.id.btnRegister);
+        btnRegister = findViewById(R.id.btnRegister);
         database = FirebaseDatabase.getInstance();
         mDatabase = database.getReference(USERS);
         mDatabaseP = database.getReference("Parkeo");
         mAuth = FirebaseAuth.getInstance();
 
-
-        btnRegister.setOnClickListener(new View.OnClickListener(){
+        btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //insert data into firebase database
-                if(editTextCorreo.getText().toString() != null && editTextPass.getText().toString() != null) {
+                if (editTextCorreo.getText().toString() != null && editTextPass.getText().toString() != null) {
                     email = editTextCorreo.getText().toString();
                     pass = editTextPass.getText().toString();
+                    num=editTextCodigoT.getText().toString();
+                    numTargeta=0;
                     String[] parts = email.split("@");
                     String part1 = parts[0]; //obtiene: 19
-                    nombre =part1;
-                   numTargeta = editTextCodigoT.getText().toString();
-                    final String[] valor = {"0"};
-                    //listT = new ArrayList<String>();
-                    Query query = mDatabaseP.orderByChild("idTargeta").equalTo(numTargeta);
-                    query.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if( snapshot!= null){
-                                Log.d(TAG, "Este es "+ String.valueOf(snapshot));
-                               valor[0] ="1";
-                                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                                    Log.d(TAG, "Este es hijo "+ String.valueOf(snapshot));
-                                }
-
-                            }
-
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-                            Log.d(TAG, "Este  es un error");
-                        }
-                    });
-                    Log.d(TAG, String.valueOf(listT));
-                    String tipo="";
-                    if (valor.equals("1")) {
-                        tipo = "privilegiado";
+                    nombre = part1;
+                 //   Log.d(TAG, "Este  num " + String.valueOf(num));
+                    if(!num.isEmpty()){
+                        numTargeta= convertirStringANumero(num);
                     }
-                    user = new Usuario( email, nombre, tipo, pass);
-                    if(pass.length()<6){
-                        Toast.makeText(getApplicationContext(),"Mìnimo 6 Caracteres en Contraseña.",Toast.LENGTH_LONG).show();
-                    }else{
-                    registerUser();}
+
+                    //String[] valor = {"0"};
+                    //listT = new ArrayList<String>();
+                    if (!pass.isEmpty() || !email.isEmpty() || numTargeta!= 0) {
+                        if(pass.length() < 6 ){
+                            Toast.makeText(getApplicationContext(), "Mìnimo 6 Caracteres en Contraseña.", Toast.LENGTH_LONG).show();
+                        }else{
+                            validarDatos(numTargeta,email,nombre,pass);}
+
+
+                    }
+                    else {
+                        Toast.makeText(getApplicationContext(), "Llenar todos los campos.", Toast.LENGTH_LONG).show();
+                    }
+                  //  Log.d(TAG, String.valueOf(valor));
+
                 }
             }
         });
 
     }
+    public int convertirStringANumero(String numero) throws NumberFormatException {
+        return Integer.parseInt(numero);
+    }
+    public void validarDatos(Integer targeta, String email, String nombre, String pass) {
+        Query query = mDatabaseP.orderByChild("idTargeta").equalTo(targeta).limitToFirst(1);
+        Log.d(TAG, "Este el query " + String.valueOf(query));
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    Log.d(TAG, "Este es un usuario con targeta " + String.valueOf(snapshot));
+                    //  valor[0] = "1";
+                    String tipo = "";
 
-    public void validarTargeta(String targeta) {
+                    tipo = "privilegiado";
 
+                    user = new Usuario(email, nombre, tipo, pass);
+
+                        registerUser();
+
+                }else {
+                    Toast.makeText(getApplicationContext(), "No existe Targeta asociada.", Toast.LENGTH_LONG).show();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d(TAG, "Este  es un error");
+            }
+        });
     }
 
     public void registerUser() {
@@ -134,6 +149,7 @@ public class Registrarse extends AppCompatActivity {
 
     /**
      * adding user information to database and redirect to login screen
+     *
      * @param currentUser
      */
     public void updateUI(FirebaseUser currentUser) {
