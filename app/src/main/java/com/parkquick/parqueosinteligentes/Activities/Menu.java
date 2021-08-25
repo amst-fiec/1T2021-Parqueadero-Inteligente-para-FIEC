@@ -35,7 +35,7 @@ public class Menu extends AppCompatActivity {
 
     private static String tipo;
 
-    private TextView textViewNombre;
+    private TextView textViewNombre, textViewDisponible, textViewOcupado;
     private Button btnMapa,cerrarSesion;
 
     private FirebaseAuth mAuth;
@@ -88,24 +88,26 @@ public class Menu extends AppCompatActivity {
 
         textViewNombre = (TextView) findViewById(R.id.textViewNombre);
         textViewNombre.setText(usuario);
+        textViewDisponible = (TextView) findViewById(R.id.TextViewCountLibre2);
+        textViewOcupado=(TextView) findViewById(R.id.TextViewCountOcupado2);
+        //cerrarSesion = (Button) findViewById(R.id.btnCerrarSesion);
+      //  cerrarSesion.setOnClickListener(new View.OnClickListener() {
+        //    @Override
+         //   public void onClick(View v) {
+          //      mAuth.signOut();
+            //    startActivity(new Intent(Menu.this, MainActivity.class));
+              //  finish();
+         //   }
+        //});
 
-        cerrarSesion = (Button) findViewById(R.id.btnCerrarSesion);
-        cerrarSesion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAuth.signOut();
-                startActivity(new Intent(Menu.this, MainActivity.class));
-                finish();
-            }
-        });
+        //btnMapa = (Button) findViewById(R.id.btnMapa);
+       // btnMapa.setOnClickListener(new View.OnClickListener() {
+          //  @Override
+        //    public void onClick(View view) {
+            //    startActivity(new Intent(Menu.this, ParqueaderoMap.class));
+            //}
+        //});
 
-        btnMapa = (Button) findViewById(R.id.btnMapa);
-        btnMapa.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(Menu.this, ParqueaderoMap.class));
-            }
-        });
 
         listUser = new ArrayList<>();
         list = new ArrayList<>();
@@ -163,15 +165,29 @@ public class Menu extends AppCompatActivity {
         } else {
             query = db_referenceP;
         }
-
+        Log.d("myTag", "This is my message " + tipo);
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 list.clear();
+                Integer count=0;
+                Integer countEstadoOcup=0;
+                Integer estado=0;
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Parqueo parqueo = dataSnapshot.getValue(Parqueo.class);
+                   estado = dataSnapshot.child("estado").getValue(Integer.class);
+                    Log.d("myTag", "This is my estado o/L " + estado);
+                    Log.d("myTag", "This is my message " + tipo);
+                    if(estado==1){
+                        countEstadoOcup++ ;}
+                    count++;
                     list.add(parqueo);
                 }
+
+
+
+                textViewDisponible.setText(""+(count-countEstadoOcup));
+                textViewOcupado.setText(""+countEstadoOcup);
                 adapter.notifyDataSetChanged();
             }
 
@@ -184,12 +200,31 @@ public class Menu extends AppCompatActivity {
     }
 
 
-    public static void setTipo(String tipo) {
-        Menu.tipo = tipo;
-    }
+    public void contarDisponible(String tipo) {
+        Query query = null;
+        if (tipo.equals("comun")) {
+            query = db_referenceP.orderByChild("tipo").equalTo(tipo);
+        } else {
+            query = db_referenceP;
+        }
 
-    public static String getTipo() {
-        return tipo;
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Integer count=0;
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Parqueo parqueo = dataSnapshot.getValue(Parqueo.class);
+                    count++;
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 
     public void notificacion() {
