@@ -57,10 +57,23 @@ public class Menu extends AppCompatActivity {
     private ArrayList<Parqueo> list;
     private ArrayList<Usuario> listUser;
 
+    TimeZone myTimeZone;
+    SimpleDateFormat simpleDateFormat;
+    String dateTime;
+    int hora;
+    int minuto;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+
+        myTimeZone = TimeZone.getTimeZone("America/Guayaquil");
+        simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
+        simpleDateFormat.setTimeZone(myTimeZone);
+        dateTime = simpleDateFormat.format(new Date());
+        hora=Integer.parseInt(dateTime.split(":")[0]);
+        minuto=Integer.parseInt(dateTime.split(":")[1]);
 
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
@@ -72,7 +85,10 @@ public class Menu extends AppCompatActivity {
         InitializateComponents();
         //-------------------
         //notificacionTipoUsuario();
-        verificaHorarioPrioridad();
+        marcarAsistencia();
+        cambiarTipoParqueo();
+        resetearParqueoPrivilegiado();
+        //verificaHorarioPrioridad();
         getTipoDB();
 
         //-------------------
@@ -224,7 +240,7 @@ public class Menu extends AppCompatActivity {
 
     }
 
-    private void verificaHorarioPrioridad(){
+    /*private void verificaHorarioPrioridad(){
         String[] ArrayIDEstacionamiento = {"P1","P2","P3","P4"};
 
         TimeZone myTimeZone = TimeZone.getTimeZone("America/Guayaquil");
@@ -262,6 +278,94 @@ public class Menu extends AppCompatActivity {
                 DatabaseReference db_reference_estacionamiento = root.getReference("Parkeo").child(estacionamiento).child("tipo");
                 db_reference_estacionamiento.setValue("privilegiado");
             }
+
+
+        }
+
+    }*/
+
+    /*   Funcion marcarAsistencia
+         La funcion marca '1' en el nodo asistencia de la referencia Parkeo de la Realtime Database
+         de Firebase una vez que un usuario autorizado ocupa su parkeo privilegiado antes de las 12
+         del dia, el valor del nodo asistencia permanecera en cero si no asiste.*/
+    private void marcarAsistencia(){
+        if(hora<12&&hora>6&&minuto>=0) {
+            db_referenceP.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot snap : snapshot.getChildren()) {
+                        if( snap.child("tipo").getValue(String.class).equals("privilegiado")) {
+                            if ((snap.child("asistencia").getValue(Integer.class) == 0) &&
+                                    snap.child("estado").getValue(Integer.class) == 1) {
+                                db_referenceP.child(snap.getValue(String.class)).child("asistencia").setValue(1);
+                            }
+                        }
+
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+    }
+    /*   Funcion cambiarPrioridad
+         La funcion cambia el nodo tipo de la referencia Parkeo de la Realtime Database de Firebase
+         de 'privilegiado' a 'comun' a aquellos parkeos tipo 'privilegiado' que tengan asistencia '0'
+         a partir de las 12 del dia.
+    */
+    private void cambiarTipoParqueo(){
+        if(hora>=12&&hora<18&&minuto>=0) {
+            db_referenceP.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot snap : snapshot.getChildren()) {
+                        if(snap.hasChild("asistencia")) {
+                            if ((snap.child("asistencia").getValue(Integer.class) == 0)) {
+                                db_referenceP.child(snap.getValue(String.class)).child("tipo").setValue("comun");
+                            }
+                        }
+
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+        }
+    }
+    /*   Funcion resetearParqueoPrivilegiado
+         La funcion devuelve a la normalidad los parqueos tipo 'privilegiado' que fueron cambiados a
+         tipo 'comun' por la funcion cambiarTipoParqueo asi como tambien establece la asistencia
+         como 0 a partir de las 6 de la tarde.
+    */
+    private void resetearParqueoPrivilegiado(){
+        if((hora>=18||hora<=6)&&minuto>=0){
+            db_referenceP.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot snap : snapshot.getChildren()) {
+                        if (snap.hasChild("asistencia")) {
+                            db_referenceP.child(snap.getKey()).child("tipo").setValue("privilegiado");
+                            db_referenceP.child(snap.getKey()).child("asistencia").setValue(0);
+                        }
+
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
 
 
         }
