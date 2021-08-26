@@ -42,6 +42,7 @@ public class Menu extends AppCompatActivity {
 
     private DatabaseReference db_reference;
     private DatabaseReference db_referenceP;
+    private DatabaseReference db_reference_user;
 
     private FirebaseUser user;
     private FirebaseDatabase root;
@@ -81,6 +82,7 @@ public class Menu extends AppCompatActivity {
         root = FirebaseDatabase.getInstance();
         db_reference = root.getReference("usuarios");
         db_referenceP = root.getReference("Parkeo");
+        db_reference_user = root.getReference("usuarios");
 
         InitializateComponents();
         //-------------------
@@ -100,10 +102,22 @@ public class Menu extends AppCompatActivity {
         //----Variables
         uid = mAuth.getUid();
         email = user.getEmail();
-        usuario = user.getDisplayName();//email.split("@")[0];
+//      usuario = user.getDisplayName();
 
         textViewNombre = (TextView) findViewById(R.id.textViewNombre);
-        textViewNombre.setText(usuario);
+
+        db_reference_user.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                usuario = dataSnapshot.child(uid).child("nombre").getValue(String.class);
+                textViewNombre.setText(usuario);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                textViewNombre.setText("Nombre no definido");
+            }
+        });
 
         cerrarSesion = (Button) findViewById(R.id.btnCerrarSesion);
         cerrarSesion.setOnClickListener(new View.OnClickListener() {
