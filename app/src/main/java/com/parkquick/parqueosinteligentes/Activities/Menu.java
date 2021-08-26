@@ -297,7 +297,7 @@ public class Menu extends AppCompatActivity {
                         if( snap.child("tipo").getValue(String.class).equals("privilegiado")) {
                             if ((snap.child("asistencia").getValue(Integer.class) == 0) &&
                                     snap.child("estado").getValue(Integer.class) == 1) {
-                                db_referenceP.child(snap.getValue(String.class)).child("asistencia").setValue(1);
+                                db_referenceP.child(snap.getKey()).child("asistencia").setValue(1);
                             }
                         }
 
@@ -325,7 +325,7 @@ public class Menu extends AppCompatActivity {
                     for (DataSnapshot snap : snapshot.getChildren()) {
                         if(snap.hasChild("asistencia")) {
                             if ((snap.child("asistencia").getValue(Integer.class) == 0)) {
-                                db_referenceP.child(snap.getValue(String.class)).child("tipo").setValue("comun");
+                                db_referenceP.child(snap.getKey()).child("tipo").setValue("comun");
                             }
                         }
 
