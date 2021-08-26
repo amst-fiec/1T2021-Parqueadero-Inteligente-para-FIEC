@@ -1,6 +1,9 @@
 package com.parkquick.parqueosinteligentes.Activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -99,23 +102,36 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void iniciarSesion(String email,String password){
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            if (!(email.equals("") && password.equals(""))) {
 
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            //To Menu Activity
-                            Intent intent= new Intent(MainActivity.this, Menu.class);
-                            startActivity(intent);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(MainActivity.this, "Usuario o contraseña incorrecta.",
-                                    Toast.LENGTH_SHORT).show();
-                            txt_pass.setText("");
-                        }
-                    }
-                });
+                mAuth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    //To Menu Activity
+                                    Intent intent = new Intent(MainActivity.this, Menu.class);
+                                    startActivity(intent);
+                                } else {
+                                    // If sign in fails, display a message to the user.
+                                    Toast.makeText(MainActivity.this, "Por favor revise que sus credenciales sean correctas",
+                                            Toast.LENGTH_SHORT).show();
+                                    txt_pass.setText("");
+                                }
+                            }
+                        });
+            } else {
+                Toast.makeText(MainActivity.this, "Por favor ingrese su usuario y contraseña.",
+                        Toast.LENGTH_SHORT).show();
+
+            }
+        }else{
+            Toast.makeText(MainActivity.this, "No hay conexión a internet.",
+                    Toast.LENGTH_SHORT).show();
+        }
 
     }
 
