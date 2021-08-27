@@ -32,7 +32,7 @@ public class Registrarse extends AppCompatActivity {
     private Button btnRegister;
     private FirebaseDatabase database;
     private DatabaseReference mDatabase;
-    private DatabaseReference mDatabaseP;
+    private DatabaseReference mDatabaseT;
     private static final String USERS = "usuarios";
     private String TAG = "Reistrarse";
     private String nombre, email, pass , num;
@@ -52,7 +52,7 @@ public class Registrarse extends AppCompatActivity {
         btnRegister = findViewById(R.id.btnRegister);
         database = FirebaseDatabase.getInstance();
         mDatabase = database.getReference(USERS);
-        mDatabaseP = database.getReference("Parkeo");
+        mDatabaseT = database.getReference("Targeta");
         mAuth = FirebaseAuth.getInstance();
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
@@ -96,7 +96,7 @@ public class Registrarse extends AppCompatActivity {
         return Integer.parseInt(numero);
     }
     public void validarDatos(Integer targeta, String email, String nombre, String pass) {
-        Query query = mDatabaseP.orderByChild("idTargeta").equalTo(targeta).limitToFirst(1);
+        Query query = mDatabaseT.orderByChild("idTargeta").equalTo(targeta).limitToFirst(1);
         Log.d(TAG, "Este el query " + String.valueOf(query));
         query.addValueEventListener(new ValueEventListener() {
             @Override
@@ -110,7 +110,7 @@ public class Registrarse extends AppCompatActivity {
 
                     user = new Usuario(email, nombre, tipo, pass);
 
-                        registerUser();
+                    registerUser();
 
                 }else {
                     Toast.makeText(getApplicationContext(), "No existe Targeta asociada.", Toast.LENGTH_LONG).show();
