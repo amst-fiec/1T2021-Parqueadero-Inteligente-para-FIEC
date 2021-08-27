@@ -2,10 +2,15 @@ package com.parkquick.parqueosinteligentes.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -63,11 +68,14 @@ public class Menu extends AppCompatActivity {
     String dateTime;
     int hora;
     int minuto;
+    private final static String CHANNEL_ID = "NOTIFICACION";
+    private final static int NOTIFICACION_ID  = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+        createNotificationChannel();
 
         myTimeZone = TimeZone.getTimeZone("America/Guayaquil");
         simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
@@ -90,12 +98,43 @@ public class Menu extends AppCompatActivity {
         marcarAsistencia();
         cambiarTipoParqueo();
         resetearParqueoPrivilegiado();
+        notificarParqueoIndebido();
         //verificaHorarioPrioridad();
         getTipoDB();
 
         //-------------------
         //recview.setLayoutManager(new LinearLayoutManager(this));--NO
 
+    }
+
+    public void notificacion(String titulo, String mensaje, int n){
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.bad_alert)
+                .setContentTitle(titulo)
+                .setContentText(mensaje)
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(mensaje))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        // notificationId is a unique int for each notification that you must define
+        notificationManager.notify(n, builder.build());
+    }
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Notificacion";
+            String description = "Valores peligrosos";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 
     private void InitializateComponents() {
@@ -383,6 +422,55 @@ public class Menu extends AppCompatActivity {
 
 
         }
+
+    }
+    private void notificarParqueoIndebido(){
+        db_reference_user.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot snapuid:snapshot.getChildren()){
+                    if(snapuid.child("tipo").getValue(String.class).equals("autoridad")) {
+                        System.out.println("00000000000000000000000000000000000000000000000000000000000000000000000");
+                        System.out.println("snap:" + snapuid.getKey());
+                        System.out.println("uid:" + uid);
+                        if (snapuid.getKey().equals(uid)) {
+                            System.out.println("1111111111111111111111111111111111111111111111111111111111111111111111111111111111111");
+                            System.out.println("snap2:" + snapuid.getKey());
+                            db_referenceP.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    for (DataSnapshot snapparkeo : snapshot.getChildren()) {
+                                        System.out.println("222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222");
+                                        if (snapparkeo.getKey().equals(snapuid.child("Parqueo").getValue(String.class)) && snapparkeo.child("estado").getValue(Integer.class) == 1) {
+                                            if (snapparkeo.child("indicador").getValue(Integer.class) <= 1 && snapparkeo.child("tipo").getValue(String.class).equals("privilegiado")) {
+                                                System.out.println("3333333333333333333333333333333333333333333333333333333333333333333333");
+                                                notificacion("Parqueo ocupado indebidamente", "Tu parqueo ha sido ocupado por un usuario no autorizado", NOTIFICACION_ID);
+
+                                            }
+
+                                        }
+
+                                    }
+
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+                        }
+                    }
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
     }
 
