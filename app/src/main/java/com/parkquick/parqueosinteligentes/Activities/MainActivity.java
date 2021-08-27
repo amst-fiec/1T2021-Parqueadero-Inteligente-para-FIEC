@@ -49,15 +49,21 @@ public class MainActivity extends AppCompatActivity {
     private Button btn_iniciar_sesion, btn_iniciar_sesion_Google;
     private int RC_SIGN_IN = 123;
 
+    private void inicialize() {
+        mAuth = FirebaseAuth.getInstance();
+        if(mAuth.getCurrentUser()!=null){
+            //To Menu Activity
+            Intent intent = new Intent(MainActivity.this, Menu.class);
+            startActivity(intent);
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        // Initialize Firebase Auth
-        mAuth = FirebaseAuth.getInstance();
-
+        inicialize();
         InitializateComponents();
 
         // Configure Google Sign In

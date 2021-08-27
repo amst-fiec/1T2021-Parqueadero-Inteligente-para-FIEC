@@ -31,6 +31,7 @@ public class EsperaAsignacion extends AppCompatActivity {
         btnInicio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mAuth.signOut();
                 startActivity(new Intent(EsperaAsignacion.this, MainActivity.class));
                 finish();
             }

@@ -15,7 +15,6 @@
       },
       "oauth_client": [
         {
-
           "client_id": "155596677277-b7hnfojlui5mgc6f3gla5v4ecie1hq67.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -24,7 +23,14 @@
           }
         },
         {
-
+          "client_id": "155596677277-c5epqtati9ud7pukt2s05etojemm7oob.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.parkquick.parqueosinteligentes",
+            "certificate_hash": "846c51296b8701a38c9a05f6e31fdc17bd63f5ca"
+          }
+        },
+        {
           "client_id": "155596677277-hovs0i5fv7kgvqbi945ptb8btb199888.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
