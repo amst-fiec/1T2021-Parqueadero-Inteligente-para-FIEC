@@ -15,9 +15,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ParqueosInteligentes">
-        <activity android:name="com.parkquick.parqueosinteligentes.Activities.EsperaAsignacion"></activity>
-        <activity android:name="com.parkquick.parqueosinteligentes.Activities.Registrarse"
-             android:theme="@style/Theme.ParqueosInteligentes"/>
+        <activity
+            android:name=".Activities.Home"
+            android:exported="true"
+            android:label="@string/title_activity_home"
+            android:theme="@style/Theme.ParqueosInteligentes.NoActionBar" />
+        <activity android:name=".Activities.EsperaAsignacion" />
+        <activity
+            android:name=".Activities.Registrarse"
+            android:theme="@style/Theme.ParqueosInteligentes" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -31,17 +37,17 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name="com.parkquick.parqueosinteligentes.Activities.ParqueaderoMap"
+            android:name=".Activities.ParqueaderoMap"
             android:label="@string/title_activity_parqueadero" />
-        <activity android:name="com.parkquick.parqueosinteligentes.Activities.Menu" />
-        <activity android:name="com.parkquick.parqueosinteligentes.Activities.SplashScreem">
+        <activity android:name=".Activities.Menu" />
+        <activity android:name=".Activities.SplashScreem">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.parkquick.parqueosinteligentes.Activities.MainActivity" />
+        <activity android:name=".Activities.MainActivity" />
     </application>
 
 </manifest>

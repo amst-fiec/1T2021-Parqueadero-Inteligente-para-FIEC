@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             //To Menu Activity
-                            Intent intent= new Intent(MainActivity.this, Menu.class);
+                            Intent intent= new Intent(MainActivity.this, Home.class);
                             startActivity(intent);
                         } else {
                             // If sign in fails, display a message to the user.

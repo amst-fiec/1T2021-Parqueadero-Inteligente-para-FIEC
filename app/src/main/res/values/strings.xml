@@ -7,4 +7,15 @@
         <item>Hybrid</item>
         <item>Terrain</item>
     </string-array>
+    <string name="title_activity_home">home</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">ParkQuic</string>
+    <string name="nav_header_subtitle">Grupo3</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_map">Mapa</string>
+    <string name="menu_slideshow">Salir</string>
 </resources>

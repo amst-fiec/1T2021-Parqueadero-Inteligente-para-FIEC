@@ -2,5 +2,6 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/1T2021-Parqueadero-Inteligente-para-FIEC" vcs="Git" />
   </component>
 </project>
