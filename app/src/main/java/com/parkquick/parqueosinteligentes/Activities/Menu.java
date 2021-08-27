@@ -35,7 +35,7 @@ public class Menu extends AppCompatActivity {
 
     private static String tipo;
 
-    private TextView textViewNombre, textViewDisponible, textViewOcupado;
+    private TextView textViewNombre, textViewDisponible, textViewOcupado, textViewBateria;
     private Button btnMapa,cerrarSesion;
 
     private FirebaseAuth mAuth;
@@ -88,25 +88,26 @@ public class Menu extends AppCompatActivity {
 
         textViewNombre = (TextView) findViewById(R.id.textViewNombre);
         textViewNombre.setText(usuario);
-        textViewDisponible = (TextView) findViewById(R.id.TextViewCountLibre2);
-        textViewOcupado=(TextView) findViewById(R.id.TextViewCountOcupado2);
-        //cerrarSesion = (Button) findViewById(R.id.btnCerrarSesion);
-      //  cerrarSesion.setOnClickListener(new View.OnClickListener() {
-        //    @Override
-         //   public void onClick(View v) {
-          //      mAuth.signOut();
-            //    startActivity(new Intent(Menu.this, MainActivity.class));
-              //  finish();
-         //   }
-        //});
+        textViewDisponible = (TextView) findViewById(R.id.TextViewCountLibreVal);
+        textViewOcupado=(TextView) findViewById(R.id.TextViewCountOcupadoVal);
+        textViewBateria=(TextView) findViewById(R.id.TextViewBateria);
+        cerrarSesion = (Button) findViewById(R.id.btnCerrarSesion);
+       cerrarSesion.setOnClickListener(new View.OnClickListener() {
+         @Override
+         public void onClick(View v) {
+           mAuth.signOut();
+             startActivity(new Intent(Menu.this, MainActivity.class));
+              finish();
+          }
+      });
 
-        //btnMapa = (Button) findViewById(R.id.btnMapa);
-       // btnMapa.setOnClickListener(new View.OnClickListener() {
-          //  @Override
-        //    public void onClick(View view) {
-            //    startActivity(new Intent(Menu.this, ParqueaderoMap.class));
-            //}
-        //});
+        btnMapa = (Button) findViewById(R.id.btnMapa);
+        btnMapa.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+             startActivity(new Intent(Menu.this, ParqueaderoMap.class));
+           }
+       });
 
 
         listUser = new ArrayList<>();
@@ -173,9 +174,11 @@ public class Menu extends AppCompatActivity {
                 Integer count=0;
                 Integer countEstadoOcup=0;
                 Integer estado=0;
+                Integer bateria=0;
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Parqueo parqueo = dataSnapshot.getValue(Parqueo.class);
                    estado = dataSnapshot.child("estado").getValue(Integer.class);
+                    bateria = dataSnapshot.child("bateria").getValue(Integer.class);
                     Log.d("myTag", "This is my estado o/L " + estado);
                     Log.d("myTag", "This is my message " + tipo);
                     if(estado==1){
@@ -188,6 +191,7 @@ public class Menu extends AppCompatActivity {
 
                 textViewDisponible.setText(""+(count-countEstadoOcup));
                 textViewOcupado.setText(""+countEstadoOcup);
+                textViewBateria.setText(bateria);
                 adapter.notifyDataSetChanged();
             }
 

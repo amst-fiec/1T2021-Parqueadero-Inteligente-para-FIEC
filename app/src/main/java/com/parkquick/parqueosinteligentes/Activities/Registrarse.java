@@ -96,7 +96,7 @@ public class Registrarse extends AppCompatActivity {
         return Integer.parseInt(numero);
     }
     public void validarDatos(Integer targeta, String email, String nombre, String pass) {
-        Query query = mDatabaseT.orderByChild("idTargeta").equalTo(targeta).limitToFirst(1);
+        Query query = mDatabaseT.equalTo(targeta).limitToFirst(1);
         Log.d(TAG, "Este el query " + String.valueOf(query));
         query.addValueEventListener(new ValueEventListener() {
             @Override
@@ -105,11 +105,8 @@ public class Registrarse extends AppCompatActivity {
                     Log.d(TAG, "Este es un usuario con targeta " + String.valueOf(snapshot));
                     //  valor[0] = "1";
                     String tipo = "";
-
                     tipo = "privilegiado";
-
                     user = new Usuario(email, nombre, tipo, pass);
-
                     registerUser();
 
                 }else {

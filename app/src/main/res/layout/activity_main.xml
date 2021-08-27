@@ -70,7 +70,8 @@
         android:layout_height="wrap_content"
         android:background="@drawable/reg_btn_style"
         android:text="Iniciar Sesión"
-        android:textColor="#1A1A71" />
+        android:textColor="#1A1A71"
+        tools:ignore="DuplicateIds" />
 
         <Button
             android:id="@+id/btnLoginGoogle"
