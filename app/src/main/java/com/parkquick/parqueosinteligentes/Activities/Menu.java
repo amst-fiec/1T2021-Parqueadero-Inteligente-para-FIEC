@@ -40,7 +40,7 @@ public class Menu extends AppCompatActivity {
 
     private static String tipo;
 
-    private TextView textViewNombre, textViewDisponible, textViewOcupado,textViewBateria;;;
+    private TextView textViewNombre;
     private Button btnMapa,cerrarSesion;
 
     private FirebaseAuth mAuth;
@@ -52,7 +52,6 @@ public class Menu extends AppCompatActivity {
     private FirebaseUser user;
     private FirebaseDatabase root;
 
-    //Variables usadas en la rama
     private String uid;
     private String email;
     private String usuario;
@@ -66,8 +65,8 @@ public class Menu extends AppCompatActivity {
     TimeZone myTimeZone;
     SimpleDateFormat simpleDateFormat;
     String dateTime;
-    int hora;
-    int minuto;
+    private int hora;
+    private int minuto;
     private final static String CHANNEL_ID = "NOTIFICACION";
     private final static int NOTIFICACION_ID  = 0;
 
@@ -93,17 +92,13 @@ public class Menu extends AppCompatActivity {
         db_reference_user = root.getReference("usuarios");
 
         InitializateComponents();
-        //-------------------
-        //notificacionTipoUsuario();
+
         marcarAsistencia();
         cambiarTipoParqueo();
         resetearParqueoPrivilegiado();
         notificarParqueoIndebido();
-        //verificaHorarioPrioridad();
-        getTipoDB();
 
-        //-------------------
-        //recview.setLayoutManager(new LinearLayoutManager(this));--NO
+        getTipoDB();
 
     }
 
@@ -118,30 +113,23 @@ public class Menu extends AppCompatActivity {
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        // notificationId is a unique int for each notification that you must define
         notificationManager.notify(n, builder.build());
     }
     private void createNotificationChannel() {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "Notificacion";
             String description = "Valores peligrosos";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
             channel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
     }
 
     private void InitializateComponents() {
-        //----Variables
         uid = mAuth.getUid();
         email = user.getEmail();
-//      usuario = user.getDisplayName();
 
         textViewNombre = (TextView) findViewById(R.id.textViewNombre);
 
@@ -150,9 +138,6 @@ public class Menu extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 usuario = dataSnapshot.child(uid).child("nombre").getValue(String.class);
                 textViewNombre.setText(usuario);
-                textViewDisponible = (TextView) findViewById(R.id.TextViewCountLibreVal);
-                textViewOcupado=(TextView) findViewById(R.id.TextViewCountOcupadoVal);
-                textViewBateria=(TextView) findViewById(R.id.TextBateriaValue);;
             }
 
             @Override
@@ -196,9 +181,6 @@ public class Menu extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "Usuario tipo:" + tipo, Toast.LENGTH_SHORT).show();
     }
 
-
-
-
     public void getTipoDB() {
         Query query = db_reference.child(uid);
         ValueEventListener myTag = query.addValueEventListener(new ValueEventListener() {
@@ -225,11 +207,10 @@ public class Menu extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                //   System.out.println("Fallo la lectura: " + databaseError.getCode());
             }
         });
 
-    }
+        }
 
     public void mostrarParkeo(String tipo) {
         Query query = null;
@@ -238,32 +219,15 @@ public class Menu extends AppCompatActivity {
         } else {
             query = db_referenceP;
         }
-        Log.d("myTag", "This is my message " + tipo);
+
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 list.clear();
-                Integer count=0;
-                Integer countEstadoOcup=0;
-                Integer estado=0;
-                Integer bateria=0;
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Parqueo parqueo = dataSnapshot.getValue(Parqueo.class);
-                    estado = dataSnapshot.child("estado").getValue(Integer.class);
-                    bateria = dataSnapshot.child("bateria").getValue(Integer.class);
-                    Log.d("myTag", "This is my estado o/L " + estado);
-                    Log.d("myTag", "This is my message " + tipo);
-                    if(estado==1){
-                        countEstadoOcup++ ;}
-                    count++;
                     list.add(parqueo);
                 }
-
-
-
-                textViewDisponible.setText(""+(count-countEstadoOcup));
-                textViewOcupado.setText(""+countEstadoOcup);
-                textViewBateria.setText(""+bateria+"%");
                 adapter.notifyDataSetChanged();
             }
 
@@ -316,49 +280,6 @@ public class Menu extends AppCompatActivity {
 
     }
 
-    /*private void verificaHorarioPrioridad(){
-        String[] ArrayIDEstacionamiento = {"P1","P2","P3","P4"};
-
-        TimeZone myTimeZone = TimeZone.getTimeZone("America/Guayaquil");
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
-        simpleDateFormat.setTimeZone(myTimeZone);
-        String dateTime = simpleDateFormat.format(new Date());
-
-        int hora=Integer.parseInt(dateTime.split(":")[0]);
-        int minuto=Integer.parseInt(dateTime.split(":")[1]);
-
-        System.out.println("---------------");
-        System.out.println(dateTime);
-
-        //Esta funcion hace que a partir de las 12, todos los estacionamientos cambien su prioridad a COMUN
-        if(hora>=12&&hora<20&&minuto>=0){
-            System.out.println("----------------------------------");
-            System.out.println("Todos los parqueaderos disponibles");
-            System.out.println("----------------------------------");
-
-            for(int i = 0; i< ArrayIDEstacionamiento.length; i++) {
-                String estacionamiento = ArrayIDEstacionamiento[i];
-
-                DatabaseReference db_reference_estacionamiento = root.getReference("Parkeo").child(estacionamiento).child("tipo");
-                db_reference_estacionamiento.setValue("comun");
-            }
-
-        }else if(hora<12||hora>=20&&minuto>=0){
-            System.out.println("-------------------------------------------");
-            System.out.println("Solo parqueaderos no reservados disponibles");
-            System.out.println("-------------------------------------------");
-
-            for(int i = 0; i<2; i++) {//TODO:Definir que parqueaderos tienen son privilegiados
-                String estacionamiento = ArrayIDEstacionamiento[i];
-
-                DatabaseReference db_reference_estacionamiento = root.getReference("Parkeo").child(estacionamiento).child("tipo");
-                db_reference_estacionamiento.setValue("privilegiado");
-            }
-
-
-        }
-
-    }*/
 
     /*   Funcion marcarAsistencia
          La funcion marca '1' en el nodo asistencia de la referencia Parkeo de la Realtime Database
@@ -453,20 +374,13 @@ public class Menu extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot snapuid:snapshot.getChildren()){
                     if(snapuid.child("tipo").getValue(String.class).equals("autoridad")) {
-                        System.out.println("00000000000000000000000000000000000000000000000000000000000000000000000");
-                        System.out.println("snap:" + snapuid.getKey());
-                        System.out.println("uid:" + uid);
                         if (snapuid.getKey().equals(uid)) {
-                            System.out.println("1111111111111111111111111111111111111111111111111111111111111111111111111111111111111");
-                            System.out.println("snap2:" + snapuid.getKey());
                             db_referenceP.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     for (DataSnapshot snapparkeo : snapshot.getChildren()) {
-
                                         if (snapparkeo.getKey().equals(snapuid.child("Parqueo").getValue(String.class)) && snapparkeo.child("estado").getValue(Integer.class) == 1) {
                                             if (snapparkeo.child("indicador").getValue(Integer.class) <= 1 && snapparkeo.child("tipo").getValue(String.class).equals("privilegiado")) {
-                                                System.out.println("3333333333333333333333333333333333333333333333333333333333333333333333");
                                                 notificacion("Parqueo ocupado indebidamente", "Tu parqueo ha sido ocupado por un usuario no autorizado", NOTIFICACION_ID);
 
                                             }
