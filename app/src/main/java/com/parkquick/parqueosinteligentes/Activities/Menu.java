@@ -40,7 +40,7 @@ public class Menu extends AppCompatActivity {
 
     private static String tipo;
 
-    private TextView textViewNombre;
+    private TextView textViewNombre, textViewDisponible, textViewOcupado,textViewBateria;;;
     private Button btnMapa,cerrarSesion;
 
     private FirebaseAuth mAuth;
@@ -150,6 +150,9 @@ public class Menu extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 usuario = dataSnapshot.child(uid).child("nombre").getValue(String.class);
                 textViewNombre.setText(usuario);
+                textViewDisponible = (TextView) findViewById(R.id.TextViewCountLibreVal);
+                textViewOcupado=(TextView) findViewById(R.id.TextViewCountOcupadoVal);
+                textViewBateria=(TextView) findViewById(R.id.TextBateriaValue);;
             }
 
             @Override
@@ -193,6 +196,9 @@ public class Menu extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "Usuario tipo:" + tipo, Toast.LENGTH_SHORT).show();
     }
 
+
+
+
     public void getTipoDB() {
         Query query = db_reference.child(uid);
         ValueEventListener myTag = query.addValueEventListener(new ValueEventListener() {
@@ -223,7 +229,7 @@ public class Menu extends AppCompatActivity {
             }
         });
 
-        }
+    }
 
     public void mostrarParkeo(String tipo) {
         Query query = null;
@@ -232,15 +238,32 @@ public class Menu extends AppCompatActivity {
         } else {
             query = db_referenceP;
         }
-
+        Log.d("myTag", "This is my message " + tipo);
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 list.clear();
+                Integer count=0;
+                Integer countEstadoOcup=0;
+                Integer estado=0;
+                Integer bateria=0;
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Parqueo parqueo = dataSnapshot.getValue(Parqueo.class);
+                    estado = dataSnapshot.child("estado").getValue(Integer.class);
+                    bateria = dataSnapshot.child("bateria").getValue(Integer.class);
+                    Log.d("myTag", "This is my estado o/L " + estado);
+                    Log.d("myTag", "This is my message " + tipo);
+                    if(estado==1){
+                        countEstadoOcup++ ;}
+                    count++;
                     list.add(parqueo);
                 }
+
+
+
+                textViewDisponible.setText(""+(count-countEstadoOcup));
+                textViewOcupado.setText(""+countEstadoOcup);
+                textViewBateria.setText(""+bateria+"%");
                 adapter.notifyDataSetChanged();
             }
 
@@ -440,7 +463,7 @@ public class Menu extends AppCompatActivity {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     for (DataSnapshot snapparkeo : snapshot.getChildren()) {
-                                        System.out.println("222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222");
+
                                         if (snapparkeo.getKey().equals(snapuid.child("Parqueo").getValue(String.class)) && snapparkeo.child("estado").getValue(Integer.class) == 1) {
                                             if (snapparkeo.child("indicador").getValue(Integer.class) <= 1 && snapparkeo.child("tipo").getValue(String.class).equals("privilegiado")) {
                                                 System.out.println("3333333333333333333333333333333333333333333333333333333333333333333333");

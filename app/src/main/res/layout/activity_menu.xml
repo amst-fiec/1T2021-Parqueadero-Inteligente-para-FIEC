@@ -48,19 +48,125 @@
 
 
         </LinearLayout>
-        <Button
-            android:id="@+id/btnMapa"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="274dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textTitleResume"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/reg_table_style"
+                android:gravity="center"
+                android:text="INFORMACIÓN"
+                android:textColor="@color/purple_500"
+                android:textSize="26sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/TextCountLibre"
+                    android:layout_width="149dp"
+                    android:layout_height="wrap_content"
+
+                    android:text="Disponibles: "
+                    android:textColor="@color/black"
+                    android:textSize="23sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/TextViewCountLibreVal"
+                    android:layout_width="125dp"
+                    android:layout_height="match_parent"
+                    android:text="0"
+                    android:gravity="center"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/TextCountOcupado"
+                    android:layout_width="149dp"
+                    android:layout_height="match_parent"
+                    android:background="#FFFFFF"
+                    android:text="Ocupados: "
+                    android:textColor="@color/black"
+                    android:textSize="23sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/TextViewCountOcupadoVal"
+                    android:layout_width="125dp"
+                    android:layout_height="match_parent"
+                    android:text="0"
+                    android:gravity="center"
+                    android:textSize="20sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/TextViewBateria"
+                    android:layout_width="149dp"
+                    android:layout_height="match_parent"
+                    android:background="#FFFFFF"
+                    android:text="Batería: "
+                    android:textColor="@color/black"
+                    android:textSize="23sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/TextBateriaValue"
+                    android:layout_width="125dp"
+                    android:layout_height="match_parent"
+                    android:text=" 0%"
+                    android:gravity="center"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="208dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginTop="50dp"
-            android:onClick="revisarMapa"
-            android:text="Ver Mapa" />
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btnCerrarSesion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Cerrar Sesión" />
+            <Button
+                android:id="@+id/btnMapa"
+                android:layout_width="205dp"
+                android:layout_height="wrap_content"
 
+                android:background="@drawable/reg_btn2_style"
+                android:text="Ver Mapa"
+                tools:ignore="DuplicateIds" />
+
+            <Button
+                android:id="@+id/btnCerrarSesion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/reg_btn_style"
+                android:text="Cerrar Sesión"
+                tools:ignore="DuplicateIds" />
+        </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
