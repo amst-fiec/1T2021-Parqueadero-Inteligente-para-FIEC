@@ -139,7 +139,7 @@ public class ParqueaderoMap extends FragmentActivity implements   GoogleMap.OnMa
                 .title("P4")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
         markerP4.setTag(0);
-//Posicion fiec
+        //Posicion fiec
         markerP = mMap.addMarker(new MarkerOptions()
                 .position(ParkingFiec)
                 .title("Parqueadero FIEC")
@@ -233,9 +233,6 @@ public class ParqueaderoMap extends FragmentActivity implements   GoogleMap.OnMa
                     Toast.LENGTH_SHORT).show();
         }
 
-        // Return false to indicate that we have not consumed the event and that we wish
-        // for the default behavior to occur (which is for the camera to move such that the
-        // marker is centered and for the marker's info window to open, if it has one).
         return false;
     }
 
@@ -243,18 +240,10 @@ public class ParqueaderoMap extends FragmentActivity implements   GoogleMap.OnMa
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         if (requestCode == LOCATION_REQUEST_CODE) {
-            // ¿Permisos asignados?
             if (permissions.length > 0 &&
                     permissions[0].equals(Manifest.permission.ACCESS_FINE_LOCATION) &&
                     grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
                     return;
                 }
                 mMap.setMyLocationEnabled(true);

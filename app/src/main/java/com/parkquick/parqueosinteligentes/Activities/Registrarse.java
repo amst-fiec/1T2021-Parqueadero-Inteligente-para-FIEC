@@ -147,11 +147,6 @@ public class Registrarse extends AppCompatActivity {
                 });
     }
 
-    /**
-     * adding user information to database and redirect to login screen
-     *
-     * @param currentUser
-     */
     public void updateUI(FirebaseUser currentUser) {
         String keyid = mDatabase.push().getKey();
         mDatabase.child(keyid).setValue(user); //adding user info to database

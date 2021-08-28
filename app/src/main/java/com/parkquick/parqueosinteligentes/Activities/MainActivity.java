@@ -212,10 +212,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void addUserToDataBase(){
-
-
-    }
 
     public void agregarUsuarioBD(String uid){
         HashMap<String,String> datos_usuario = new HashMap<>();
