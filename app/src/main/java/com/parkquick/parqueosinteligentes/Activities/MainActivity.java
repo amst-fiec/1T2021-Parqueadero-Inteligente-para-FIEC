@@ -134,57 +134,66 @@ public class MainActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT).show();
         }
 
+
     }
 
     private void firebaseAuthWithGoogle(String idToken) {
-        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
+        //Internet check
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
 
-                            //Verificar si el usuario ya existe en la BD
-                            db_reference_usuarios.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot snapshot) {
-                                    if(!snapshot.hasChild(mAuth.getUid())) {
-                                        agregarUsuarioBD(mAuth.getUid());
-                                        System.out.println("-----------Usuario SIN prioridad agregado a la BD");
+            AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
+            mAuth.signInWithCredential(credential)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
 
-                                        //Redireccion a pagina de espera de asignacion
-                                        Intent intent= new Intent(MainActivity.this, EsperaAsignacion.class);
-                                        startActivity(intent);
-                                    }
-                                    else {
-                                        //Si existe y no tiene prioridad asignada se envia a la pagina
-                                        String tipo = snapshot.child(mAuth.getUid()).child("tipo").getValue(String.class);
-                                        if(tipo.equals("")){
+                                //Verificar si el usuario ya existe en la BD
+                                db_reference_usuarios.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot snapshot) {
+                                        if (!snapshot.hasChild(mAuth.getUid())) {
+                                            agregarUsuarioBD(mAuth.getUid());
+
                                             //Redireccion a pagina de espera de asignacion
-                                            Intent intent= new Intent(MainActivity.this, EsperaAsignacion.class);
+                                            Intent intent = new Intent(MainActivity.this, EsperaAsignacion.class);
                                             startActivity(intent);
-                                        }else{
-                                            //Redireccionar al menu
-                                            Intent intent = new Intent(MainActivity.this, Menu.class);
-                                            startActivity(intent);
+                                        } else {
+                                            //Si existe y no tiene prioridad asignada se envia a la pagina
+                                            String tipo = snapshot.child(mAuth.getUid()).child("tipo").getValue(String.class);
+                                            if (tipo.equals("")) {
+                                                //Redireccion a pagina de espera de asignacion
+                                                Intent intent = new Intent(MainActivity.this, EsperaAsignacion.class);
+                                                startActivity(intent);
+                                            } else {
+                                                //Redireccionar al menu
+                                                Intent intent = new Intent(MainActivity.this, Menu.class);
+                                                startActivity(intent);
+                                            }
+
                                         }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError error) {
 
                                     }
-                                }
-                                @Override
-                                public void onCancelled(DatabaseError error) {
+                                });
 
-                                }
-                            });
-
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(MainActivity.this, "Usuario o contraseña incorrecta.",
-                                    Toast.LENGTH_SHORT).show();
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Toast.makeText(MainActivity.this, "Usuario o contraseña incorrecta.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
-                });
+                    });
+        }else{
+            Toast.makeText(MainActivity.this, "No hay conexión a internet.",
+            Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void signInGoogle() {
